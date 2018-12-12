@@ -9,9 +9,11 @@ Vue.config.productionTip = false;
 Vue.use(Mint);
 
 /* eslint-disable no-new */
-new Vue({
+const app = new Vue({
   el: '#app',
   router,
   components: { App },
   template: '<App/>'
 });
+
+export default app
