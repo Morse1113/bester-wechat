@@ -2,11 +2,15 @@
   <div class="user-login">
     <img class="background" src="../assets/login-background.png"/>
     <div class="form">
-      <p><input class="phone" type="text" placeholder="手机号码" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')"
-                required="required" v-model="phoneNum"/></p>
-      <p><input class="verify-code" type="text" placeholder="验证码" maxlength="6"
+      <p>
+        <input class="phone" type="text" placeholder="手机号码" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')"
+                required="required" v-model="phoneNum"/>
+      </p>
+      <p>
+        <input class="verify-code" type="text" placeholder="验证码" maxlength="6"
                 onkeyup="value=value.replace(/[^\d]/g,'')" required="required" v-model="verifyCode"/>
-        <button class="verify-send" @click="sendVerifyCode()">获取验证码</button>
+        <button v-show="show" class="verify-send" @click="sendVerifyCode()">获取验证码</button>
+        <button v-show="!show" class="verify-send">{{count}}s后重发</button>
       </p>
       <button class="verify-phone" @click="userLogin()">登录/注册</button>
     </div>
@@ -23,7 +27,10 @@
     data() {
       return {
         phoneNum: '',
-        verifyCode: ''
+        verifyCode: '',
+        count: '',
+        show: true,
+        timer: null
       }
     },
     beforeCreate() {
@@ -38,6 +45,20 @@
         if (!this.phoneNum.match(/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/)) {
           MessageBox('提示', '请输入正确的手机号！');
           return
+        }
+        const TIME_COUNT = 60;
+        if (!this.timer) {
+          this.count = TIME_COUNT;
+          this.show = false;
+          this.timer = setInterval(() => {
+            if (this.count > 0 && this.count <= TIME_COUNT) {
+              this.count--;
+            } else {
+              this.show = true;
+              clearInterval(this.timer);
+              this.timer = null;
+            }
+          }, 1000)
         }
         service('get', '/user/verificationCode', {
           phoneNum: this.phoneNum
