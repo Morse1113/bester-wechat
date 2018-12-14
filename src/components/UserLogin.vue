@@ -97,7 +97,7 @@
     height: 100%;
     width: 100%;
     background-image: url("../assets/login-background.png");
-    background-size: cover;
+    background-size: 100% 100%;
   }
 
   .form {

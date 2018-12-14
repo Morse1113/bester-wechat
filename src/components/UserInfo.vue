@@ -138,7 +138,7 @@
     height: 100%;
     width: 100%;
     background-image: url("../assets/bg.png");
-    background-size: cover;
+    background-size: 100% 100%;
   }
 
   .heijin-btn {
