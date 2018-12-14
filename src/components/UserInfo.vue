@@ -3,7 +3,7 @@
     <div class="info-container">
       <div>
         <p><img src="../assets/1.png" alt="">会籍：<span class="vip-level">{{vipLevel}}</span>
-          <button v-show="bgInputShow" class="btn btn-sm heijin-btn" @click="bgShow=true">&nbsp;黑金会籍&nbsp;</button>
+          <button class="btn btn-sm heijin-btn" @click="bgShow=true">&nbsp;黑金会籍&nbsp;</button>
         </p>
         <p><img src="../assets/2.png" alt="">姓名：<span class="user-name">{{userName}}</span></p>
         <p><img src="../assets/3.png" alt="">电话：<span class="user-phone">{{phone}}</span></p>
@@ -68,8 +68,7 @@
         voucherShow: false,
         blackGoldCard: '',
         blackGoldPwd: '',
-        voucherCard: '',
-        bgInputShow: false
+        voucherCard: ''
       }
     },
     created () {
@@ -95,7 +94,6 @@
             this.vipLevel = '黑金会籍';
           } else {
             this.vipLevel = '白银会籍';
-            this.bgInputShow = true;
           }
           this.userName = data.userName;
           this.phone = data.phone;
