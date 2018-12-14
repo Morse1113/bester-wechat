@@ -11,6 +11,7 @@
         <p><img src="../assets/12.png" alt="">代金券：<span class="user-identity">{{voucherAmount}}</span>
           <button class="btn btn-sm voucher-btn" @click="voucherShow=true">&nbsp;充值&nbsp;</button>
         </p>
+        <button class="logout" @click="logout()">退出登录</button>
       </div>
     </div>
 
@@ -50,6 +51,8 @@
 <script>
   import {service} from "../js/api";
   import {MessageBox} from "mint-ui";
+  import {Toast} from 'mint-ui';
+  import app from "@/main";
 
   export default {
     name: 'UserInfo',
@@ -113,6 +116,12 @@
             this.userInfoDetail();
           }
         })
+      },
+      logout: function () {
+        service('post', '/user/logout', {}).then(response => {
+          Toast('退出成功');
+          app.$router.replace('/user-login');
+        })
       }
     }
   }
@@ -140,7 +149,7 @@
     border-radius: 15px;
     outline: none;
     border: none;
-    color: black;
+    color: #78482F;
     font-size: 15px;
   }
 
@@ -152,7 +161,7 @@
     border-radius: 15px;
     outline: none;
     border: none;
-    color: black;
+    color: #78482F;
     font-size: 15px;
   }
 
@@ -182,7 +191,7 @@
     left: 0;
     right: 0;
     font-size: 15px;
-    color: black;
+    color: #78482F;
   }
 
   .card-input span {
@@ -316,5 +325,36 @@
     text-align: right;
     border-right: 1px solid;
     border-color: black;
+  }
+
+  .logout {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    background-color: #DAA24B;
+    font-weight: lighter;
+    border-radius: 15px;
+    outline: none;
+    border: none;
+    color: #78482F;
+    font-size: 16px;
+    width: 40%;
+    height: 15%;
+  }
+
+  ::-webkit-input-placeholder {
+    color: #78482F;
+  }
+
+  :-moz-placeholder { /* Firefox 18- */
+    color: #78482F;
+  }
+
+  ::-moz-placeholder { /* Firefox 19+ */
+    color: #78482F;
+  }
+
+  :-ms-input-placeholder {
+    color: #78482F;
   }
 </style>
