@@ -60,9 +60,9 @@
     data() {
       return {
         vipLevel: '',
-        userName: '',
+        userName: '实名认证暂未开放',
         phone: '',
-        identityId: '',
+        identityId: '实名认证暂未开放',
         voucherAmount: '',
         bgShow: false,
         voucherShow: false,
@@ -95,9 +95,7 @@
           } else {
             this.vipLevel = '白银会籍';
           }
-          this.userName = data.userName;
           this.phone = data.phone;
-          this.identityId = data.identityId;
           this.voucherAmount = data.voucherAmount > 0 ? data.voucherAmount : '无'
         })
       },
