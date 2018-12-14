@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <img class="background" src="../assets/bg.png"/>
     <div class="info-container">
       <div>
         <p><img src="../assets/1.png" alt="">会籍：<span class="vip-level">{{vipLevel}}</span>
@@ -121,12 +120,16 @@
 
 <style scoped>
 
-  .background {
-    position: absolute;
-    z-index: 0;
-    left: 0;
+  html, body {
     height: 100%;
     width: 100%;
+  }
+
+  .container {
+    height: 100%;
+    width: 100%;
+    background-image: url("../assets/bg.png");
+    background-size: cover;
   }
 
   .heijin-btn {
