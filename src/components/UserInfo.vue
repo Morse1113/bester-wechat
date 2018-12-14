@@ -53,6 +53,7 @@
   import {MessageBox} from "mint-ui";
   import {Toast} from 'mint-ui';
   import app from "@/main";
+  import $ from 'jquery'
 
   export default {
     name: 'UserInfo',
@@ -73,6 +74,14 @@
     },
     created () {
       this.userInfoDetail();
+    },
+    mounted () {
+      const height = window.innerHeight;
+      console.log(height);
+      if (height > 800) {
+        $('.card-input p').css({"top": "37%"});
+        $('.heijin-bind').css({"top": "40%"});
+      }
     },
     methods: {
       userInfoDetail: function() {
