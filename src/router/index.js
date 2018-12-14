@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import BrandList from '@/components/BrandList'
 import UserLogin from '@/components/UserLogin'
 import UserInfo from '@/components/UserInfo'
@@ -11,8 +10,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      redirect: '/user-login'
     },
     {
       path: '/brand-list',
