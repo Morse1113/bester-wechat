@@ -24,7 +24,7 @@
         <img class="input-right" src="../assets/right.png">
       </p>
       <p class="bg-input">
-        <input class="bg-card" type="text" placeholder="卡号" maxlength="16" required="required" v-model="blackGoldCard"/>
+        <input class="bg-card" type="text" placeholder="卡号" maxlength="12" required="required" v-model="blackGoldCard"/>
         <input class="bg-pwd" type="text" placeholder="卡密" maxlength="8" required="required" v-model="blackGoldPwd"/>
         <button class="heijin-bind" @click="bindBgCard()">激活黑金会籍</button>
       </p>
@@ -40,7 +40,7 @@
         <img class="input-right" src="../assets/right.png">
       </p>
       <p class="bg-input">
-        <input class="voucher-card" type="text" placeholder="卡号" maxlength="12" required="required" v-model="voucherCard"/>
+        <input class="voucher-card" type="text" placeholder="卡号" maxlength="16" required="required" v-model="voucherCard"/>
         <button class="voucher-bind" @click="bindVoucherCard()">立即充值</button>
       </p>
       <img class="close-img" src="../assets/close.png" @click="voucherShow=false"/>
