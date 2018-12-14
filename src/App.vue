@@ -5,12 +5,8 @@
 </template>
 
 <script>
-  import $ from 'jquery'
   export default {
-    name: 'App',
-    mounted () {
-      $('body').css({'height':$(window).height()})
-    },
+    name: 'App'
   }
 </script>
 
