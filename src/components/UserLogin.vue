@@ -1,6 +1,5 @@
 <template>
   <div class="user-login">
-    <img class="background" src="../assets/login-background.png"/>
     <div class="form">
       <p><input class="phone" type="text" placeholder="手机号码" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')"
                 required="required" v-model="phoneNum"/></p>
@@ -62,17 +61,17 @@
 </script>
 
 <style scoped>
-  .user-login {
+
+  html, body {
     height: 100%;
     width: 100%;
   }
 
-  .background {
-    position: absolute;
-    z-index: 0;
-    left: 0;
+  .user-login {
     height: 100%;
     width: 100%;
+    background-image: url("../assets/login-background.png");
+    background-size: cover;
   }
 
   .form {
