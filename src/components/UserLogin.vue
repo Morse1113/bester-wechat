@@ -2,9 +2,9 @@
   <div class="user-login">
     <div class="form">
       <p><input class="phone" type="text" placeholder="手机号码" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')"
-                required="required" v-model="phoneNum"/></p>
+                required="required" v-model="phoneNum" v-keyboard/></p>
       <p><input class="verify-code" type="text" placeholder="验证码" maxlength="6"
-                onkeyup="value=value.replace(/[^\d]/g,'')" required="required" v-model="verifyCode"/>
+                onkeyup="value=value.replace(/[^\d]/g,'')" required="required" v-model="verifyCode" v-keyboard/>
         <button v-show="show" class="verify-send" @click="sendVerifyCode()">获取验证码</button>
         <button v-show="!show" class="verify-send">{{count}}s后重发</button>
       </p>
@@ -17,6 +17,7 @@
   import {Toast} from 'mint-ui';
   import {service} from "../js/api";
   import app from '../main.js'
+  import keyboard from "../js/keyboard"
 
   export default {
     name: 'UserLogin',
@@ -82,6 +83,9 @@
           app.$router.replace('/user-info');
         })
       }
+    },
+    directives: {
+      keyboard: keyboard
     }
   }
 </script>
