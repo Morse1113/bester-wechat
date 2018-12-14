@@ -207,7 +207,7 @@
   .card-input p {
     position: fixed;
     margin: 0 auto;
-    top: 38%;
+    top: 41%;
     left: 0;
     right: 0;
   }
@@ -245,14 +245,14 @@
     display: block;
     margin: 0 auto;
     width: 50%;
-    top: 30%;
+    top: 22%;
   }
 
   .heijin-bind {
     position: relative;
     display: block;
     margin: 0 auto;
-    top: 55%;
+    top: 48%;
     background-color: #DAA24B;
     font-weight: lighter;
     border-radius: 15px;
@@ -268,7 +268,7 @@
     position: relative;
     left: 0;
     right: 0;
-    top: -9%;
+    top: -60px;
     width: 80%;
   }
 
@@ -285,7 +285,7 @@
     position: relative;
     display: block;
     margin: 0 auto;
-    top: 140px;
+    top: 150px;
     background-color: #DAA24B;
     font-weight: lighter;
     border-radius: 15px;
