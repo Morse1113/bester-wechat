@@ -2,8 +2,10 @@
   <div class="user-login">
     <img class="background" src="../assets/login-background.png"/>
     <div class="form">
-      <p><input class="phone" type="text" placeholder="手机号码" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')" required="required" v-model="phoneNum"/></p>
-      <p><input class="verify-code" type="text" placeholder="验证码" maxlength="6" onkeyup="value=value.replace(/[^\d]/g,'')" required="required" v-model="verifyCode"/>
+      <p><input class="phone" type="text" placeholder="手机号码" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')"
+                required="required" v-model="phoneNum"/></p>
+      <p><input class="verify-code" type="text" placeholder="验证码" maxlength="6"
+                onkeyup="value=value.replace(/[^\d]/g,'')" required="required" v-model="verifyCode"/>
         <button class="verify-send" @click="sendVerifyCode()">获取验证码</button>
       </p>
       <button class="verify-phone" @click="userLogin()">登录/注册</button>
@@ -13,7 +15,7 @@
 
 <script>
   import {MessageBox} from "mint-ui";
-  import {service} from "@/js/api";
+  import {service} from "../js/api";
   import app from '../main.js'
 
   export default {
@@ -24,7 +26,7 @@
         verifyCode: ''
       }
     },
-    created () {
+    beforeCreate() {
       service('get', '/user/isLogin', {}).then(response => {
         if (response.code === 200 && response.data) {
           app.$router.replace('/user-info');
@@ -74,11 +76,11 @@
   }
 
   .form {
-    position: fixed;
+    position: relative;
     margin: 0 auto;
     left: 0;
     right: 0;
-    top: 35%;
+    top: 40%;
     width: 70%;
   }
 
@@ -99,7 +101,7 @@
   .verify-phone {
     background-color: #DAA24B;
     font-weight: lighter;
-    border-radius: 40px;
+    border-radius: 50px;
     height: 50px;
     width: 210px;
     outline: none;
@@ -107,6 +109,8 @@
     font-size: 20px;
     z-index: auto;
     color: white;
+    position: relative;
+    top: 30px;
   }
 
   input {

@@ -4,15 +4,46 @@
     <div class="info-container">
       <div>
         <p><img src="../assets/1.png" alt="">会籍：<span class="vip-level">{{vipLevel}}</span>
-          <button class="btn btn-sm heijin-btn" @click="blackGold()">&nbsp;黑金会籍&nbsp;</button>
+          <button v-show="bgInputShow" class="btn btn-sm heijin-btn" @click="bgShow=true">&nbsp;黑金会籍&nbsp;</button>
         </p>
         <p><img src="../assets/2.png" alt="">姓名：<span class="user-name">{{userName}}</span></p>
         <p><img src="../assets/3.png" alt="">电话：<span class="user-phone">{{phone}}</span></p>
         <p><img src="../assets/4.png" alt="">身份证号：<span class="user-identity">{{identityId}}</span></p>
         <p><img src="../assets/12.png" alt="">代金券：<span class="user-identity">{{voucherAmount}}</span>
-          <button class="btn btn-sm voucher-btn" @click="voucher()">&nbsp;充值&nbsp;</button>
+          <button class="btn btn-sm voucher-btn" @click="voucherShow=true">&nbsp;充值&nbsp;</button>
         </p>
       </div>
+    </div>
+
+    <!--黑金会籍绑定输入框-->
+    <div class="card-input" v-show="bgShow">
+      <img class="input-background" src="../assets/input-bg.png">
+      <p>
+        <img class="input-left" src="../assets/left.png">
+        <span>黑金会籍注册通道</span>
+        <img class="input-right" src="../assets/right.png">
+      </p>
+      <p class="bg-input">
+        <input class="bg-card" type="text" placeholder="卡号" maxlength="16" required="required" v-model="blackGoldCard"/>
+        <input class="bg-pwd" type="text" placeholder="卡密" maxlength="8" required="required" v-model="blackGoldPwd"/>
+        <button class="heijin-bind" @click="bindBgCard()">激活黑金会籍</button>
+      </p>
+      <img class="level-img" src="../assets/level.png"/>
+      <img class="close-img" src="../assets/close.png" @click="bgShow=false"/>
+    </div>
+
+    <!--代金券充值输入框-->
+    <div class="card-input" v-show="voucherShow">
+      <img class="input-background" src="../assets/input-bg.png">
+      <p><img class="input-left" src="../assets/left.png">
+        <span>代金券充值</span>
+        <img class="input-right" src="../assets/right.png">
+      </p>
+      <p class="bg-input">
+        <input class="voucher-card" type="text" placeholder="卡号" maxlength="12" required="required" v-model="voucherCard"/>
+        <button class="voucher-bind" @click="bindVoucherCard()">立即充值</button>
+      </p>
+      <img class="close-img" src="../assets/close.png" @click="voucherShow=false"/>
     </div>
   </div>
 </template>
@@ -29,29 +60,60 @@
         userName: '',
         phone: '',
         identityId: '',
-        voucherAmount: ''
+        voucherAmount: '',
+        bgShow: false,
+        voucherShow: false,
+        blackGoldCard: '',
+        blackGoldPwd: '',
+        voucherCard: '',
+        bgInputShow: false
       }
     },
     created () {
-      service('get', '/user/detail', {}).then(response => {
-        if (response.code !== 200) {
-          MessageBox('提示', response.message);
-          return;
-        }
-        const data = response.data;
-        this.vipLevel = data.vipLevel === 10 ? '黑金会籍' : '白银会籍';
-        this.userName = data.userName;
-        this.phone = data.phone;
-        this.identityId = data.identityId;
-        this.voucherAmount = data.voucherAmount > 0 ? data.voucherAmount : '无'
-      })
+      this.userInfoDetail();
     },
     methods: {
-      blackGold: function() {
-        alert("黑金")
+      userInfoDetail: function() {
+        service('get', '/user/detail', {}).then(response => {
+          if (response.code !== 200) {
+            MessageBox('提示', response.message);
+            return;
+          }
+          const data = response.data;
+          if (data.vipLevel === 10) {
+            this.vipLevel = '黑金会籍';
+          } else {
+            this.vipLevel = '白银会籍';
+            this.bgInputShow = true;
+          }
+          this.userName = data.userName;
+          this.phone = data.phone;
+          this.identityId = data.identityId;
+          this.voucherAmount = data.voucherAmount > 0 ? data.voucherAmount : '无'
+        })
       },
-      voucher: function () {
-        alert("充值")
+      bindBgCard: function () {
+        service('post', '/blackGold/bind', {
+          cardId: this.blackGoldCard,
+          password: this.blackGoldPwd
+        }).then(response => {
+          MessageBox('提示', response.message);
+          if (response.code === 200) {
+            this.bgShow = false;
+            this.userInfoDetail();
+          }
+        })
+      },
+      bindVoucherCard: function () {
+        service('post', '/voucher/bind', {
+          cardId: this.voucherCard,
+        }).then(response => {
+          MessageBox('提示', response.message);
+          if (response.code === 200) {
+            this.voucherShow = false;
+            this.userInfoDetail();
+          }
+        })
       }
     }
   }
@@ -92,12 +154,12 @@
   }
 
   .info-container {
-    position: fixed;
+    position: relative;
     margin: 0 auto;
     left: 0;
     right: 0;
     top: 30%;
-    width: 80%;
+    width: 90%;
   }
 
   .info-container img {
@@ -106,6 +168,129 @@
     margin-left: 3px;
     margin-right: 3px;
     width: 25px;
+  }
+
+  .card-input {
+    position: fixed;
+    margin: 0 auto;
+    top: 28%;
+    width: 76%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    font-size: 15px;
+    color: black;
+  }
+
+  .card-input span {
+    font-family: 思源黑体,fantasy;
+    color: #78482F;
+    font-weight: bold;
+  }
+
+  .input-background {
+    width: 100%;
+  }
+
+  .card-input p {
+    position: fixed;
+    margin: 0 auto;
+    top: 38%;
+    left: 0;
+    right: 0;
+  }
+
+  .input-left {
+    width: 8%;
+  }
+
+  .input-right {
+    width: 8%;
+  }
+
+  input {
+    margin: auto;
+    border-style: none;
+    outline: none;
+    background-color: #c79f67;
+  }
+
+  .bg-input {
+    width: 100%;
+    height: 30%;
+  }
+
+  .bg-card {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+    top: 20%;
+  }
+
+  .bg-pwd {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+    top: 30%;
+  }
+
+  .heijin-bind {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    top: 55%;
+    background-color: #DAA24B;
+    font-weight: lighter;
+    border-radius: 15px;
+    outline: none;
+    border: none;
+    color: #78482F;
+    font-size: 16px;
+    width: 40%;
+    height: 15%;
+  }
+
+  .level-img {
+    position: relative;
+    left: 0;
+    right: 0;
+    top: -9%;
+    width: 80%;
+  }
+
+  .voucher-card {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+    top: 50px;
+    height: 30px;
+  }
+
+  .voucher-bind {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    top: 140px;
+    background-color: #DAA24B;
+    font-weight: lighter;
+    border-radius: 15px;
+    outline: none;
+    border: none;
+    color: #78482F;
+    font-size: 16px;
+    width: 40%;
+    height: 15%;
+  }
+
+  .close-img {
+    position: fixed;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width: 8%;
   }
 
   .info-container p {
