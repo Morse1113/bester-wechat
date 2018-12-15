@@ -9,7 +9,6 @@
     name: 'App',
     data() {
       return {
-        height: 0
       }
     }
   }
@@ -26,6 +25,7 @@
   }
 
   html, body {
+    height: 100%;
     width: 100%;
   }
 

@@ -17,7 +17,6 @@
   import {Toast} from 'mint-ui';
   import {service} from "../js/api";
   import app from '../main.js'
-  import $ from 'jquery'
 
   export default {
     name: 'UserLogin',
@@ -31,7 +30,6 @@
       }
     },
     beforeCreate() {
-      $('body').height($('body')[0].clientHeight);
       service('get', '/user/isLogin', {}).then(response => {
         if (response.code === 200 && response.data) {
           app.$router.replace('/user-info');
