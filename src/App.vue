@@ -5,23 +5,12 @@
 </template>
 
 <script>
-  import $ from 'jquery'
-
   export default {
     name: 'App',
     data() {
       return {
         height: 0
       }
-    },
-    beforeCreate() {
-      this.height = window.innerHeight;
-    },
-    mounted() {
-      $(window).resize(function () {
-        $('html').height(this.height);
-        $('body').height(this.height);
-      });
     }
   }
 </script>

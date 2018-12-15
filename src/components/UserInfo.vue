@@ -72,6 +72,7 @@
       }
     },
     created () {
+      $('body').height($('body')[0].clientHeight);
       this.userInfoDetail();
     },
     mounted () {
