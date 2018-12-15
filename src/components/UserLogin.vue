@@ -36,6 +36,22 @@
         }
       })
     },
+    mounted () {
+      let bodyHeight = document.body.scrollHeight;
+      window.onresize = function(){
+        let scrolledHeight = bodyHeight - document.body.scrollHeight;
+        if (scrolledHeight > 0) {
+          self.bottomButtonShow = false;
+          setTimeout(function(){
+            let pannel = self.$refs.deviceModelPannel;
+            pannel.scrollIntoView(true);
+            pannel.scrollIntoViewIfNeeded();
+          }, 50);
+        } else {
+          self.bottomButtonShow = true;
+        }
+      };
+    },
     methods: {
       sendVerifyCode: function () {
         if (!this.phoneNum.match(/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/)) {
@@ -87,11 +103,6 @@
 </script>
 
 <style scoped>
-
-  html, body {
-    height: 100%;
-    width: 100%;
-  }
 
   .user-login {
     height: 100%;
