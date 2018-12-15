@@ -8,8 +8,16 @@
   import $ from 'jquery'
   export default {
     name: 'App',
+    data () {
+      return {
+        height: window.innerHeight
+      }
+    },
     mounted() {
-      $('body').height($('body')[0].clientHeight);
+      this.height = window.innerHeight;
+      $(window).resize(function() {
+        $('.main').height(this.height);
+      });
     }
   }
 </script>
@@ -22,6 +30,10 @@
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
+  }
+
+  html, body {
+    width: 100%;
   }
 
   .Router {

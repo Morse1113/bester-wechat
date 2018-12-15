@@ -88,11 +88,6 @@
 
 <style scoped>
 
-  html, body {
-    height: 100%;
-    width: 100%;
-  }
-
   .user-login {
     height: 100%;
     width: 100%;
