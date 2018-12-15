@@ -24,11 +24,6 @@
     margin-top: 60px;
   }
 
-  html, body {
-    height: 100%;
-    width: 100%;
-  }
-
   .Router {
     position: absolute;
     top: 0;

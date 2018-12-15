@@ -141,6 +141,11 @@
 
 <style scoped>
 
+  html, body {
+    height: 100%;
+    width: 100%;
+  }
+
   .container {
     height: 100%;
     width: 100%;
