@@ -41,7 +41,7 @@
       const deviceHeight = document.documentElement.clientHeight + "px";
       $('input').on("click", function () {
         console.log(deviceHeight);
-        $("body").attr("style", "height:" + deviceHeight + "px");
+        $("html body .user-login").height(deviceHeight);
       });
     },
     methods: {
