@@ -100,6 +100,14 @@
         })
       },
       bindBgCard: function () {
+        if (this.blackGoldCard.length < 12) {
+          Toast("请输入正确的卡号！");
+          return
+        }
+        if (this.blackGoldPwd.length < 8) {
+          Toast("请输入正确的卡密！");
+          return
+        }
         service('post', '/blackGold/bind', {
           cardId: this.blackGoldCard,
           password: this.blackGoldPwd

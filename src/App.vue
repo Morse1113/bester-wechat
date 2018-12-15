@@ -10,11 +10,13 @@
     name: 'App',
     data () {
       return {
-        height: window.innerHeight
+        height: 0
       }
     },
-    mounted() {
+    beforeCreate () {
       this.height = window.innerHeight;
+    },
+    mounted() {
       $(window).resize(function() {
         $('.main').height(this.height);
       });
