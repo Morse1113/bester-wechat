@@ -5,8 +5,12 @@
 </template>
 
 <script>
+  import $ from 'jquery'
   export default {
-    name: 'App'
+    name: 'App',
+    mounted() {
+      $('body').height($('body')[0].clientHeight);
+    }
   }
 </script>
 
