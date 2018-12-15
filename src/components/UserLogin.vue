@@ -17,9 +17,10 @@
 </template>
 
 <script>
-  import {MessageBox} from "mint-ui";
+  import {Toast} from 'mint-ui';
   import {service} from "../js/api";
   import app from '../main.js'
+  import $ from 'jquery'
 
   export default {
     name: 'UserLogin',
@@ -39,10 +40,17 @@
         }
       })
     },
+    mounted () {
+      const deviceHeight = document.documentElement.clientHeight + "px";
+      $('input').on("click", function () {
+        console.log(deviceHeight);
+        $("html body .user-login").height(deviceHeight);
+      });
+    },
     methods: {
       sendVerifyCode: function () {
         if (!this.phoneNum.match(/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/)) {
-          MessageBox('提示', '请输入正确的手机号！');
+          Toast('请输入正确的手机号！');
           return
         }
         const TIME_COUNT = 60;
@@ -62,16 +70,24 @@
         service('get', '/user/verificationCode', {
           phoneNum: this.phoneNum
         }).then(response => {
-          MessageBox('提示', response.code === 200 ? '发送成功，请查看您的手机' : response.message);
+          Toast(response.code === 200 ? '发送成功' : response.message);
         })
       },
       userLogin: function () {
+        if (this.phoneNum.length < 11) {
+          Toast("请输入正确的手机号");
+          return
+        }
+        if (this.verifyCode.length < 6) {
+          Toast("请输入正确的验证码");
+          return
+        }
         service('post', '/user/verification', {
           phoneNum: this.phoneNum,
           code: this.verifyCode
         }).then(response => {
           if (response.code !== 200) {
-            MessageBox('提示', response.message);
+            Toast(response.message);
             return
           }
           app.$router.replace('/user-info');
@@ -83,16 +99,12 @@
 
 <style scoped>
 
-  html, body {
-    height: 100%;
-    width: 100%;
-  }
-
   .user-login {
     height: 100%;
     width: 100%;
     background-image: url("../assets/login-background.png");
     background-size: cover;
+    background-position: center 100%;
   }
 
   .form {

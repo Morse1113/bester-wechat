@@ -3,7 +3,7 @@
     <div class="info-container">
       <div>
         <p><img src="../assets/1.png" alt="">会籍：<span class="vip-level">{{vipLevel}}</span>
-          <button v-show="bgInputShow" class="btn btn-sm heijin-btn" @click="bgShow=true">&nbsp;黑金会籍&nbsp;</button>
+          <button class="btn btn-sm heijin-btn" @click="bgShow=true">&nbsp;黑金会籍&nbsp;</button>
         </p>
         <p><img src="../assets/2.png" alt="">姓名：<span class="user-name">{{userName}}</span></p>
         <p><img src="../assets/3.png" alt="">电话：<span class="user-phone">{{phone}}</span></p>
@@ -11,6 +11,7 @@
         <p><img src="../assets/12.png" alt="">代金券：<span class="user-identity">{{voucherAmount}}</span>
           <button class="btn btn-sm voucher-btn" @click="voucherShow=true">&nbsp;充值&nbsp;</button>
         </p>
+        <button class="logout" @click="logout()">退出登录</button>
       </div>
     </div>
 
@@ -23,7 +24,7 @@
         <img class="input-right" src="../assets/right.png">
       </p>
       <p class="bg-input">
-        <input class="bg-card" type="text" placeholder="卡号" maxlength="16" required="required" v-model="blackGoldCard"/>
+        <input class="bg-card" type="text" placeholder="卡号" maxlength="12" required="required" v-model="blackGoldCard"/>
         <input class="bg-pwd" type="text" placeholder="卡密" maxlength="8" required="required" v-model="blackGoldPwd"/>
         <button class="heijin-bind" @click="bindBgCard()">激活黑金会籍</button>
       </p>
@@ -39,7 +40,7 @@
         <img class="input-right" src="../assets/right.png">
       </p>
       <p class="bg-input">
-        <input class="voucher-card" type="text" placeholder="卡号" maxlength="12" required="required" v-model="voucherCard"/>
+        <input class="voucher-card" type="text" placeholder="卡号" maxlength="16" required="required" v-model="voucherCard"/>
         <button class="voucher-bind" @click="bindVoucherCard()">立即充值</button>
       </p>
       <img class="close-img" src="../assets/close.png" @click="voucherShow=false"/>
@@ -50,26 +51,40 @@
 <script>
   import {service} from "../js/api";
   import {MessageBox} from "mint-ui";
+  import {Toast} from 'mint-ui';
+  import app from "@/main";
+  import $ from 'jquery'
 
   export default {
     name: 'UserInfo',
     data() {
       return {
         vipLevel: '',
-        userName: '',
+        userName: '实名认证暂未开放',
         phone: '',
-        identityId: '',
+        identityId: '实名认证暂未开放',
         voucherAmount: '',
         bgShow: false,
         voucherShow: false,
         blackGoldCard: '',
         blackGoldPwd: '',
-        voucherCard: '',
-        bgInputShow: false
+        voucherCard: ''
       }
     },
     created () {
       this.userInfoDetail();
+    },
+    mounted () {
+      const height = window.innerHeight;
+      if (height > 800) {
+        $('.card-input p').css({"top": "37%"});
+        $('.heijin-bind').css({"top": "40%"});
+      }
+      const deviceHeight = document.documentElement.clientHeight + "px";
+      $('input').on("click", function () {
+        console.log(deviceHeight);
+        $("html body .container").height(deviceHeight);
+      });
     },
     methods: {
       userInfoDetail: function() {
@@ -83,15 +98,20 @@
             this.vipLevel = '黑金会籍';
           } else {
             this.vipLevel = '白银会籍';
-            this.bgInputShow = true;
           }
-          this.userName = data.userName;
           this.phone = data.phone;
-          this.identityId = data.identityId;
           this.voucherAmount = data.voucherAmount > 0 ? data.voucherAmount : '无'
         })
       },
       bindBgCard: function () {
+        if (this.blackGoldCard.length < 12) {
+          Toast("请输入正确的卡号！");
+          return
+        }
+        if (this.blackGoldPwd.length < 8) {
+          Toast("请输入正确的卡密！");
+          return
+        }
         service('post', '/blackGold/bind', {
           cardId: this.blackGoldCard,
           password: this.blackGoldPwd
@@ -113,6 +133,12 @@
             this.userInfoDetail();
           }
         })
+      },
+      logout: function () {
+        service('post', '/user/logout', {}).then(response => {
+          Toast('退出成功');
+          app.$router.replace('/user-login');
+        })
       }
     }
   }
@@ -120,16 +146,12 @@
 
 <style scoped>
 
-  html, body {
-    height: 100%;
-    width: 100%;
-  }
-
   .container {
     height: 100%;
     width: 100%;
     background-image: url("../assets/bg.png");
     background-size: cover;
+    background-position: center 100%;
   }
 
   .heijin-btn {
@@ -140,7 +162,7 @@
     border-radius: 15px;
     outline: none;
     border: none;
-    color: black;
+    color: #78482F;
     font-size: 15px;
   }
 
@@ -152,7 +174,7 @@
     border-radius: 15px;
     outline: none;
     border: none;
-    color: black;
+    color: #78482F;
     font-size: 15px;
   }
 
@@ -182,7 +204,7 @@
     left: 0;
     right: 0;
     font-size: 15px;
-    color: black;
+    color: #78482F;
   }
 
   .card-input span {
@@ -198,7 +220,7 @@
   .card-input p {
     position: fixed;
     margin: 0 auto;
-    top: 38%;
+    top: 41%;
     left: 0;
     right: 0;
   }
@@ -236,14 +258,14 @@
     display: block;
     margin: 0 auto;
     width: 50%;
-    top: 30%;
+    top: 22%;
   }
 
   .heijin-bind {
     position: relative;
     display: block;
     margin: 0 auto;
-    top: 55%;
+    top: 48%;
     background-color: #DAA24B;
     font-weight: lighter;
     border-radius: 15px;
@@ -259,7 +281,7 @@
     position: relative;
     left: 0;
     right: 0;
-    top: -9%;
+    top: -60px;
     width: 80%;
   }
 
@@ -276,7 +298,7 @@
     position: relative;
     display: block;
     margin: 0 auto;
-    top: 140px;
+    top: 150px;
     background-color: #DAA24B;
     font-weight: lighter;
     border-radius: 15px;
@@ -316,5 +338,36 @@
     text-align: right;
     border-right: 1px solid;
     border-color: black;
+  }
+
+  .logout {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    background-color: #DAA24B;
+    font-weight: lighter;
+    border-radius: 15px;
+    outline: none;
+    border: none;
+    color: #78482F;
+    font-size: 16px;
+    width: 40%;
+    height: 15%;
+  }
+
+  ::-webkit-input-placeholder {
+    color: #78482F;
+  }
+
+  :-moz-placeholder { /* Firefox 18- */
+    color: #78482F;
+  }
+
+  ::-moz-placeholder { /* Firefox 19+ */
+    color: #78482F;
+  }
+
+  :-ms-input-placeholder {
+    color: #78482F;
   }
 </style>
