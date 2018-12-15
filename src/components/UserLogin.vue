@@ -17,6 +17,7 @@
   import {Toast} from 'mint-ui';
   import {service} from "../js/api";
   import app from '../main.js'
+  import $ from 'jquery'
 
   export default {
     name: 'UserLogin',
@@ -37,20 +38,11 @@
       })
     },
     mounted () {
-      let bodyHeight = document.body.scrollHeight;
-      window.onresize = function(){
-        let scrolledHeight = bodyHeight - document.body.scrollHeight;
-        if (scrolledHeight > 0) {
-          self.bottomButtonShow = false;
-          setTimeout(function(){
-            let pannel = self.$refs.deviceModelPannel;
-            pannel.scrollIntoView(true);
-            pannel.scrollIntoViewIfNeeded();
-          }, 50);
-        } else {
-          self.bottomButtonShow = true;
-        }
-      };
+      const deviceHeight = document.documentElement.clientHeight + "px";
+      $('input').on("click", function () {
+        console.log(deviceHeight);
+        $("body").attr("style", "height:" + deviceHeight + "px");
+      });
     },
     methods: {
       sendVerifyCode: function () {

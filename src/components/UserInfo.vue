@@ -75,26 +75,16 @@
       this.userInfoDetail();
     },
     mounted () {
-      let bodyHeight = document.body.scrollHeight;
-      window.onresize = function(){
-        let scrolledHeight = bodyHeight - document.body.scrollHeight;
-        if (scrolledHeight > 0) {
-          self.bottomButtonShow = false;
-          setTimeout(function(){
-            let pannel = self.$refs.deviceModelPannel;
-            pannel.scrollIntoView(true);
-            pannel.scrollIntoViewIfNeeded();
-          }, 50);
-        } else {
-          self.bottomButtonShow = true;
-        }
-      };
       const height = window.innerHeight;
       if (height > 800) {
         $('.card-input p').css({"top": "37%"});
         $('.heijin-bind').css({"top": "40%"});
       }
-
+      const deviceHeight = document.documentElement.clientHeight + "px";
+      $('input').on("click", function () {
+        console.log(deviceHeight);
+        $("body").attr("style", "height:" + deviceHeight + "px");
+      });
     },
     methods: {
       userInfoDetail: function() {
