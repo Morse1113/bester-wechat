@@ -28,7 +28,6 @@
         <input class="bg-pwd" type="text" placeholder="卡密" maxlength="8" required="required" v-model="blackGoldPwd"/>
         <button class="heijin-bind" @click="bindBgCard()">激活黑金会籍</button>
       </p>
-      <img class="level-img" src="../assets/level.png"/>
       <img class="close-img" src="../assets/close.png" @click="bgShow=false"/>
     </div>
 
@@ -265,7 +264,7 @@
     position: relative;
     display: block;
     margin: 0 auto;
-    top: 48%;
+    top: 60%;
     background-color: #DAA24B;
     font-weight: lighter;
     border-radius: 15px;
@@ -275,14 +274,6 @@
     font-size: 16px;
     width: 40%;
     height: 15%;
-  }
-
-  .level-img {
-    position: relative;
-    left: 0;
-    right: 0;
-    top: -60px;
-    width: 80%;
   }
 
   .voucher-card {
