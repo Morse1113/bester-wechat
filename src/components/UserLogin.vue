@@ -1,9 +1,12 @@
 <template>
   <div class="user-login">
     <div class="form">
-      <p><input class="phone" type="text" placeholder="手机号码" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')"
-                required="required" v-model="phoneNum"/></p>
-      <p><input class="verify-code" type="text" placeholder="验证码" maxlength="6"
+      <p>
+        <input class="phone" type="text" placeholder="手机号码" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')"
+                required="required" v-model="phoneNum"/>
+      </p>
+      <p>
+        <input class="verify-code" type="text" placeholder="验证码" maxlength="6"
                 onkeyup="value=value.replace(/[^\d]/g,'')" required="required" v-model="verifyCode"/>
         <button v-show="show" class="verify-send" @click="sendVerifyCode()">获取验证码</button>
         <button v-show="!show" class="verify-send">{{count}}s后重发</button>
