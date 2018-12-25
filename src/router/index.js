@@ -4,6 +4,7 @@ import BrandList from '@/components/BrandList'
 import UserLogin from '@/components/UserLogin'
 import UserInfo from '@/components/UserInfo'
 import Identity from '@/components/Identity'
+import OwnCoupon from '@/page/OwnCoupon'
 
 Vue.use(Router);
 
@@ -43,6 +44,13 @@ let router = new Router({
       component: Identity,
       meta: {
         title: '实名认证'
+      }
+    },{
+      path: '/ownCoupon',
+      name: 'ownCoupon',
+      component: OwnCoupon,
+      meta: {
+        title: '我的优惠券'
       }
     }
   ]
