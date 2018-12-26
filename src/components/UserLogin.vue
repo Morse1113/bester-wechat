@@ -100,8 +100,6 @@
 <style scoped>
 
   .user-login {
-    height: 100%;
-    width: 100%;
     background-image: url("../assets/login-background.png");
     background-size: cover;
     background-position: center 100%;
@@ -110,9 +108,8 @@
   .form {
     position: relative;
     margin: 0 auto;
-    left: 0;
-    right: 0;
-    top: 40%;
+    top: 50%;
+    transform: translateY(-50%);
     width: 70%;
   }
 
@@ -120,13 +117,12 @@
     float: right;
     background-color: #DAA24B;
     font-weight: lighter;
-    border-radius: 15px;
+    border-radius: 30px;
     height: 30px;
     width: 110px;
     outline: none;
     border: none;
-    font-size: 15px;
-    z-index: auto;
+    font-size: 16px;
     color: black;
   }
 
@@ -134,15 +130,15 @@
     background-color: #DAA24B;
     font-weight: lighter;
     border-radius: 50px;
-    height: 50px;
-    width: 210px;
+    height: 40px;
+    width: 70%;
     outline: none;
     border: none;
-    font-size: 20px;
+    font-size: 18px;
     z-index: auto;
     color: white;
     position: relative;
-    top: 30px;
+    top: .8rem;
   }
 
   input {
@@ -162,7 +158,7 @@
     border-bottom: 1px solid;
     border-color: #c79f67;
     color: #c79f67;
-    font-size: 1.1rem;
+    font-size: 16px;
     font-weight: lighter;
   }
 
