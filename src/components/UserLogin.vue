@@ -119,7 +119,7 @@
     font-weight: lighter;
     border-radius: 30px;
     height: 30px;
-    width: 110px;
+    width: 120px;
     outline: none;
     border: none;
     font-size: 16px;
