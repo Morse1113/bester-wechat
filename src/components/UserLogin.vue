@@ -163,7 +163,7 @@
   }
 
   .verify-code {
-    width: 40%;
+    width: 36%;
   }
 
   ::-webkit-input-placeholder {
