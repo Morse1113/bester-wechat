@@ -4,6 +4,7 @@ import BrandList from '@/components/BrandList'
 import UserLogin from '@/components/UserLogin'
 import UserInfo from '@/components/UserInfo'
 import Identity from '@/components/Identity'
+import Home from "../page/index/Home";
 
 Vue.use(Router);
 
@@ -43,6 +44,14 @@ let router = new Router({
       component: Identity,
       meta: {
         title: '实名认证'
+      }
+    },
+    {
+      path: '/home',
+      name: 'Home',
+      component: Home,
+      meta: {
+        title: '首页'
       }
     }
   ]
