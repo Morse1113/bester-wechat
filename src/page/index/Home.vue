@@ -1,7 +1,6 @@
 <template>
   <div class="all">
     <div class="home-banner">
-      <!--<img v-for="item in banners" class="banners-img" :src=item.img @click="jump(item.link)">-->
       <div class="swiper-container">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="item in banners">
