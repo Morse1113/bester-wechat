@@ -29,7 +29,7 @@
         <input type="text" placeholder="卡密" maxlength="8" required="required" v-model="blackGoldPwd"/>
       </p>
       <button class="submit-btn" @click="bindBgCard()">激活黑金会籍</button>
-      <img class="close-img" src="../assets/close.png" v-on:click="bgShow=false"/>
+      <img class="close-img" src="../assets/close.png" v-show="bgShow" v-on:click="bgShow=false"/>
     </div>
 
     <!--代金券充值输入框-->
@@ -44,7 +44,7 @@
         <input type="text" placeholder="卡号" maxlength="16" required="required" v-model="voucherCard"/>
       </p>
       <button class="submit-btn" @click="bindVoucherCard()">立即充值</button>
-      <img class="close-img" src="../assets/close.png" v-on:click="voucherShow=false"/>
+      <img class="close-img" src="../assets/close.png" v-show="voucherShow" v-on:click="voucherShow=false"/>
     </div>
   </div>
 </template>
