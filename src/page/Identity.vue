@@ -20,10 +20,11 @@
       <div class="image-pic">
         <label class="upload">
           <img class="identity-pic" id="identity-pic" src="../assets/identity.png"/>
-          <input class="file" name="file" type="file" accept="image/png,image/jpg,image/jpeg,image/bmp" hidden @change="preview"/>
+          <input class="file" name="file" type="file" accept="image/png,image/jpg,image/jpeg,image/bmp" hidden
+                 @change="preview"/>
         </label>
       </div>
-      <span class="alert">支持png、jpg、jpeg、bmp格式</span>
+      <span class="alert">支持png、jpg、jpeg、bmp格式，大小2M以内</span>
       <button class="submit" @click="upload">提交</button>
       <mt-spinner class="spinner" id="spinner" type="snake"></mt-spinner>
     </div>
@@ -75,7 +76,7 @@
         let elementById = document.getElementById('spinner');
         elementById.style.display = "block";
         let config = {
-          headers:{'Content-Type':'multipart/form-data'}
+          headers: {'Content-Type': 'multipart/form-data'}
         };
         upload('/user/identityCard', this.param, config).then(response => {
           elementById.style.display = "none";
@@ -91,12 +92,18 @@
       },
       preview: function (e) {
         let file = e.target.files[0];
+        let size = (file.size / 1024 / 1024).toFixed(2);
+        if (size > 2) {
+          Toast('图片过大：' + size + 'M');
+          file = null;
+          return;
+        }
         let imageUrl = this.getObjectURL(file);
         let image = document.getElementById('identity-pic');
         image.src = imageUrl;
         this.param = new FormData(); //创建form对象
-        this.param.append('image',file,file.name);//通过append向form对象添加数据
-        this.param.append('chunk','0');//添加form表单中其他数据
+        this.param.append('image', file, file.name);//通过append向form对象添加数据
+        this.param.append('chunk', '0');//添加form表单中其他数据
       },
       getObjectURL: function (file) {
         let url = null;
