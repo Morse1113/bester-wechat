@@ -40,7 +40,7 @@
     name: "Identity",
     data() {
       return {
-        verified: true,
+        verified: false,
         identityId: '',
         userName: '',
         sex: '',
