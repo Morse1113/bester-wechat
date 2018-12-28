@@ -5,6 +5,7 @@ import UserLogin from '@/components/UserLogin'
 import UserInfo from '@/components/UserInfo'
 import Identity from '@/components/Identity'
 import Home from "../page/index/Home";
+import ElectronicMember from "../page/ElectronicMember";
 
 Vue.use(Router);
 
@@ -52,6 +53,14 @@ let router = new Router({
       component: Home,
       meta: {
         title: '首页'
+      }
+    },
+    {
+      path: '/VIP',
+      name: 'ElectronicMember',
+      component: ElectronicMember,
+      meta: {
+        title: '电子会员'
       }
     }
   ]

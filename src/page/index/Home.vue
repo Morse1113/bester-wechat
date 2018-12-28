@@ -84,7 +84,7 @@
         firstRow: [
           {
             img: vip,
-            link: ''
+            link: '/VIP'
           },
           {
             img: cardPackage,
