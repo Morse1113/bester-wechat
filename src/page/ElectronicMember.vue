@@ -170,10 +170,6 @@
 
 <style scoped>
 
-  element.style {
-    left: 0px;
-  }
-
   .all {
     width: 100%;
     background: url("../assets/electronicMember/background.png");
@@ -218,6 +214,7 @@
   .bindTime {
     position: relative;
     bottom: 80px;
+    right: 30px;
   }
 
   .time {
