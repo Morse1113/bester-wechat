@@ -50,7 +50,7 @@ let router = new Router({
       name: 'ownCoupon',
       component: OwnCoupon,
       meta: {
-        title: '我的优惠券'
+        title: '我的卡包'
       }
     }
   ]
