@@ -19,9 +19,8 @@
       <p>请拍摄身份证正面</p>
       <div class="image-pic">
         <label class="upload">
-          <img class="identity-pic" id="identity-pic" src="../assets/identity.png"/>
-          <input class="file" name="file" type="file" accept="image/png,image/jpg,image/jpeg,image/bmp" hidden
-                 @change="preview"/>
+          <img class="identity-pic" id="identity-pic" :src="imageUrl"/>
+          <input class="file" name="file" type="file" accept="image/*" hidden @change="preview"/>
         </label>
       </div>
       <span class="alert">支持png、jpg、jpeg、bmp格式，大小2M以内</span>
@@ -47,7 +46,8 @@
         nationality: '',
         birth: '',
         address: '',
-        param: ''
+        param: '',
+        imageUrl: '../../static/identity.png'
       }
     },
     mounted() {
@@ -98,9 +98,7 @@
           file = null;
           return;
         }
-        let imageUrl = this.getObjectURL(file);
-        let image = document.getElementById('identity-pic');
-        image.src = imageUrl;
+        this.imageUrl = this.getObjectURL(file);
         this.param = new FormData(); //创建form对象
         this.param.append('image', file, file.name);//通过append向form对象添加数据
         this.param.append('chunk', '0');//添加form表单中其他数据
@@ -166,7 +164,7 @@
   .upload-card p {
     margin: 0 auto;
     text-align: left;
-    padding: 30px 0 12px 20px;
+    padding: 12px 0 12px 20px;
     font-size: 14px;
     font-family: 思源黑体, sans-serif;
     color: darkgray;
