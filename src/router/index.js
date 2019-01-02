@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import BrandList from '@/components/BrandList'
-import BrandInfo from '@/components/BrandInfo'
+import BrandList from '@/page/BrandList'
+import BrandInfo from '@/page/BrandInfo'
 import UserLogin from '@/components/UserLogin'
 import UserInfo from '@/components/UserInfo'
 import Identity from '@/components/Identity'
@@ -17,12 +17,7 @@ let router = new Router({
     {
       path: '/brand-list',
       name: 'BrandList',
-      component: BrandList
-    },
-    {
-      path: '/brand/info',
-      name: 'BrandInfo',
-      component: BrandInfo,
+      component: BrandList,
       meta: {
         title: '品牌导览'
       }
@@ -50,6 +45,11 @@ let router = new Router({
       meta: {
         title: '实名认证'
       }
+    },
+    {
+      path: '/brand/info',
+      name: 'BrandInfo',
+      component: BrandInfo
     }
   ]
 });

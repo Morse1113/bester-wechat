@@ -1,44 +1,104 @@
 <template>
   <div class="brand_div">
     <div class="search_div">
-      <input placeholder="搜索" @keyup.enter="searchs()" v-model="brandName" class="user"/>
+      <input placeholder="输入店铺或品牌名称搜索" @keyup.enter="searchs()" v-model="brandName" id="value"/>
       <i class="i_div"></i>
+      <div class="screen_div" @click="screenBrand()">
+        <img style="width: 50%; margin-left: 30%; margin-top: 7px" src="../assets/shaixuan.png"/>
+      </div>
     </div>
+    <div class="recommend_div" style="width: 100%; height: 130px">
+      <div style="border-left: 5px solid black"><h5 class="recommend_h5" style="font-size: 13px">推荐品牌</h5></div>
+      <div class="recommend_div_three" @click="recommend1()"><img v-bind:src="logo1" style="width: 90px; height: auto; border: 1px solid #9a9a9a; border-radius: 10%;"/><br/><strong style="font-size: 10px">{{brandNames1}}</strong></div>
+      <div class="recommend_div_three" @click="recommend2()"><img v-bind:src="logo2" style="width: 90px; height: auto; border: 1px solid #9a9a9a; border-radius: 10%" /><br/><strong style="font-size: 10px">{{brandNames2}}</strong></div>
+      <div class="recommend_div_three" @click="recommend3()"><img v-bind:src="logo3" style="width: 90px; height: auto; border: 1px solid #9a9a9a; border-radius: 10%"/><br/><strong style="font-size: 10px">{{brandNames3}}</strong></div>
+    </div>
+    <div style="border-left: 5px solid black; height: 18px"><h5 class="recommend_h5" style="font-size: 13px">所有品牌</h5></div>
     <div v-if="searchBack" class="one_div" id="search_div">
-      <div>
-        <h4 style="color: aliceblue">搜索结果</h4>
-      </div>
-      <div v-for="backs in searchBack">
-        <div v-for="result in backs" class="box">
-          <div>
-            <img :src="result.brandLogo" class="image_style" @click="BrandInfo(result.brandId)"/>
+      <div v-for="result in searchBack" class="box">
+        <div class="content">
+          <div class="img_div">
+            <img v-bind:src="result.brandLogo" class="image_style" @click="BrandInfo(result.brandId)">
+          </div>
+          <div class="info_div">
+            <h5 style="height: 20px">{{result.brandName}}</h5>
+            <h5 class="h5_floor"><img src="../assets/address1.png" style="width: 20px; height: auto"/>{{result.floor}}号馆
+            </h5>
+          </div>
+          <div class="before_div">
+            <template>
+              <div v-if="result.collect==true">
+                <h5><img src="../assets/after1.png"
+                         style="width: 20px; height: 20px" @click="likeAndCollect(result.brandId,type=2)"/>&nbsp;&nbsp;已收藏&nbsp;&nbsp;&nbsp;&nbsp;{{result.collectNum}}
+                </h5>
+              </div>
+              <div v-else="result.collect==false">
+                <h5><img src="../assets/before1.png"
+                         style="width: 20px; height: 20px" @click="likeAndCollect(result.brandId,type=2)"/>&nbsp;&nbsp;收藏&nbsp;&nbsp;&nbsp;&nbsp;{{result.collectNum}}
+                </h5>
+              </div>
+              <div v-if="result.like == true">
+                <h5><img src="../assets/after.png"
+                         style="width: 20px; height: 20px" @click="likeAndCollect(result.brandId,type=1)"/>&nbsp;&nbsp;已点赞&nbsp;&nbsp;&nbsp;&nbsp;{{result.praiseNum}}
+                </h5>
+              </div>
+              <div v-else="result.like == false">
+                <h5><img src="../assets/before.png"
+                         style="width: 20px; height: 20px" @click="likeAndCollect(result.brandId,type=1)"/>&nbsp;&nbsp;点赞&nbsp;&nbsp;&nbsp;&nbsp;{{result.praiseNum}}
+                </h5>
+              </div>
+            </template>
           </div>
         </div>
       </div>
     </div>
-    <div class="one_div" id="first">
-        <div v-for="brand in brandLists" class="box">
-          <div class="content">
-            <div class="img_div">
-              <img v-bind:src="brand.brandLogo" class="image_style" @click="BrandInfo(brand.brandId)">
-            </div>
-            <div class="info_div">
-              <h5>{{brand.brandName}}</h5>
-              <h5 id="h5_floor"><img src="../assets/address.png" style="width: 20px; height: auto"/>{{brand.floor}}号馆
-              </h5>
-            </div>
-            <div class="before_div">
-              <img src="../assets/before.png" style="width: 20px; height: 20px"/><br/>
-              <img src="../assets/before1.png" style="width: 20px; height: 20px"/>
-            </div>
-          </div>
-          <div></div>
+    <div class="dialog">
+      <div class="mask"></div>
+      <div class="float_frame">
+        <div class="choice_div">
+          <div class="choice_left" @click="states = 1;clickChoice()">楼号<img src="../assets/down.png" class="down_up_img" id="recommend_btn1"/></div>
+          <div class="choice_center" @click="states = 2;clickChoice()">业态<img src="../assets/up.png" class="down_up_img" id="recommend_btn2"/></div>
+          <div class="choice_right" @click="states = 3;clickChoice()">排序<img src="../assets/up.png" class="down_up_img" id="recommend_btn3"/></div>
         </div>
+        <div class="center_content" id="state1">
+          <div class="center_left" style="float:left; width: 49%; padding-top: 77px;">亚欧国际小镇</div>
+          <div style="float: left; width: 49%">
+            <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
+          </div>
+        </div>
+        <div class="center_content" id="state2">
+          <div v-for="t in types">
+            <img :src="t.img" @click="choiceType(t.valueT)" class="center_img"/>
+          </div>
+        </div>
+        <div class="center_content" id="state3">
+          <div class="center_left" style="float:left; width: 49%; padding-top: 77px;">亚欧国际小镇</div>
+          <div style="float: left; width: 49%">
+            <mt-picker :slots="sort" @change="onSortChange"></mt-picker>
+          </div>
+        </div>
+        <div class="click_div">
+          <div class="click_left" @click="clickLeft()"><p class="p_style">取消</p></div>
+          <div class="click_right" @click="clickRight()"><p class="p_style">确定</p></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
   import {service} from '../js/api'
+  import $ from 'jquery'
+  import aolai from '../assets/type/aolai.png'
+  import canyin from '../assets/type/canyin.png'
+  import ertongguan from '../assets/type/ertongguan.png'
+  import liren from '../assets/type/liren.png'
+  import maoyi from '../assets/type/maoyi.png'
+  import qinzijiudian from '../assets/type/qinzijiudian.png'
+  import xinlingshou from '../assets/type/xinlingshou.png'
+  import xiuxian from '../assets/type/xiuxian.png'
+  import yingyuan from '../assets/type/yingyuan.png'
+  import yule from '../assets/type/yule.png'
+
   export default {
     data() {
       return {
@@ -48,31 +108,134 @@
         searchBack: null,
         value: null,
         brandLists: null,
-        selected: 1
+        selected: 1,
+        type: 0,
+        slots:[{values: ['1#', '2#', '3#', '4#', '5#', '6#', '7#', '8#', '9#']}],
+        sort:[{values: ['默认排序','点赞排序','收藏排序']}],
+        val: '',
+        states: 1,
+        types: [
+          {
+            valueT: 1,
+            img: yule
+          },
+          {
+            valueT: 2,
+            img: canyin
+          },
+          {
+            valueT: 3,
+            img: aolai
+          },
+          {
+            valueT: 4,
+            img: xiuxian
+          },
+          {
+            valueT: 5,
+            img: xinlingshou
+          },
+          {
+            valueT: 6,
+            img: yingyuan
+          },
+          {
+            valueT: 7,
+            img: liren
+          },
+          {
+            valueT: 8,
+            img: maoyi
+          },
+          {
+            valueT: 9,
+            img: ertongguan
+          },
+          {
+            valueT: 10,
+            img: qinzijiudian
+          }
+        ],
+        logo1: '',
+        logo2: '',
+        logo3: '',
+        brandNames1: '',
+        brandNames2: '',
+        brandNames3: '',
+        brandIds1: 32,
+        brandIds2: 16,
+        brandIds3: 27,
+        brId: 1
+
       }
     },
     mounted(){
-      service('get', '/brand/list', {
-      }).then(data => {
-        if (data.code !== 200) {
-          alert(data.message);
-          return;
-        }
-        this.brandLists = data.data;
-        console.log(this.brandLists)
-      });
+      this.recommend1();
+      this.recommend2();
+      this.recommend3();
+      $(".dialog").hide();
+      this.query();
+      $("#state2").hide();
+      $("#state3").hide();
     },
     methods: {
-      searchs() {
-        service('get', '/brand/list', {
-          BrandName: this.brandName
+      recommend1(){
+        console.log(this.brId);
+
+        service('get', '/brand/detail', {
+          brandId: this.brandIds1
         }).then(data => {
           if (data.code !== 200) {
             alert(data.message);
             return;
           }
-          this.searchBack = data.data
-          alert("查询成功")
+          this.logo1 = data.data.brandLogo;
+          this.brandNames1 = data.data.brandName;
+        });
+      },
+      recommend2(){
+        service('get', '/brand/detail', {
+          brandId: this.brandIds2
+        }).then(data => {
+          if (data.code !== 200) {
+            alert(data.message);
+            return;
+          }
+          this.logo2 = data.data.brandLogo;
+          this.brandNames2 = data.data.brandName;
+        });
+      },
+      recommend3(){
+        service('get', '/brand/detail', {
+          brandId: this.brandIds3
+        }).then(data => {
+          if (data.code !== 200) {
+            alert(data.message);
+            return;
+          }
+          this.logo3 = data.data.brandLogo;
+          this.brandNames3 = data.data.brandName;
+        });
+      },
+      query(){
+        service('get', '/brand/list', {
+        }).then(data => {
+          if (data.code !== 200) {
+            alert(data.message);
+            return;
+          }
+          this.searchBack = data.data;
+        });
+      },
+      searchs() {
+        service('get', '/brand/list', {
+          brandName: this.brandName
+        }).then(data => {
+          if (data.code !== 200) {
+            alert(data.message);
+            return;
+          }
+          this.searchBack = data.data;
         });
       },
       BrandInfo(brandId){
@@ -82,6 +245,94 @@
             mallCode: brandId
           }
         })
+      },
+      likeAndCollect(brandId,type){
+        service('get','/brand/addNum',{
+          brandId: brandId,
+          type: type
+        }).then(data => {
+          if (data.code !== 200) {
+            alert(data.message);
+            return;
+          }
+          this.query();
+        })
+      },
+      screenBrand(){
+        $(".dialog").fadeIn()
+      },
+      clickLeft(){
+        this.query();
+        $(".dialog").hide();
+      },
+      clickRight(){
+        $(".dialog").hide();
+      },
+      onValuesChange(picker, values){
+        this.val = values[0];
+        const fl = this.val.replace(/[^0-9]/ig,"");
+        service('get', '/brand/list', {
+          floor: fl
+        }).then(data => {
+          if (data.code !== 200) {
+            alert(data.message);
+            return;
+          }
+          this.searchBack = data.data;
+        });
+      },
+      onSortChange(picker,values){
+        this.val = values[0];
+        var actionType = 0;
+        if (this.val === '点赞排序'){
+          actionType = 1;
+        } else if (this.val === '收藏排序'){
+          actionType = 2;
+        }
+        service('get', '/brand/list', {
+          orderType: actionType
+        }).then(data => {
+          if (data.code !== 200) {
+            alert(data.message);
+            return;
+          }
+          this.searchBack = data.data;
+        });
+      },
+      choiceType(typeValue) {
+        service('get', '/brand/list', {
+          brandType: typeValue
+        }).then(data => {
+          if (data.code !== 200) {
+            alert(data.message);
+            return;
+          }
+          this.searchBack = data.data;
+        });
+      },
+      clickChoice() {
+        if (this.states === 1){
+          $("#state1").show();
+          $("#state2").hide();
+          $("#state3").hide();
+          $("#recommend_btn1").attr('src','../static/img/down.png');
+          $("#recommend_btn2").attr('src','../static/img/up.png');
+          $("#recommend_btn3").attr('src','../static/img/up.png');
+        } else if (this.states === 2){
+          $("#state2").show();
+          $("#state1").hide();
+          $("#state3").hide();
+          $("#recommend_btn1").attr('src','../static/img/up.png');
+          $("#recommend_btn2").attr('src','../static/img/down.png');
+          $("#recommend_btn3").attr('src','../static/img/up.png');
+        } else if (this.states === 3){
+          $("#state3").show();
+          $("#state1").hide();
+          $("#state2").hide();
+          $("#recommend_btn1").attr('src','../static/img/up.png');
+          $("#recommend_btn2").attr('src','../static/img/up.png');
+          $("#recommend_btn3").attr('src','../static/img/down.png');
+        }
       }
     }
   }
@@ -89,17 +340,20 @@
 <style scoped>
   .brand_div {
     width: 100%;
-    height: 1500px;
+    height: 100%;
+    overflow: hidden;
+    background-color: #faf7fa;
   }
 
   input {
-    margin: 5% auto;
-    width: 80%;
+    margin-top: 5%;
+    margin-left: -14%;
+    width: 75%;
     height: 34px;
-    border: 1px solid rgba(199,159,103,.8);
-    border-radius: 10px;
-    color: #fff;
-    background: rgba(199,159,103,.15);
+    border: 1px solid #a9a9a9;
+    border-radius: 20px;
+    padding-left:20px;
+    outline:none;
   }
 
   .i_div {
@@ -109,34 +363,138 @@
     background-size: cover;
     width: 20px;
     height: 20px;
-    margin-left: 80%;
+    margin-left: 75%;
     margin-top: 7%;
   }
+
+  .screen_div{
+    margin-top: -8.5%;
+    margin-left: 72%;
+  }
+
   .image_style {
-    width: 70px;
-    height: 50px;
+    width: 100%;
+    height: 70px;
+    border: 1px solid #9a9a9a;
+    border-radius: 10%;
+  }
+
+  .one_div {
+    margin-top: 8px;
+    overflow-y:scroll;
+    overflow-x: hidden;
+    height: 500px;
+    width: 100%;
   }
 
   .content {
-    border-bottom: 1px solid #9a9a9a;
+    border-bottom: 1px solid #a9a9a9;
     width: 100%;
-    height:auto;
+    height:80px;
     margin-top: 10px;
   }
   .img_div {
-    border: 1px solid #a9a9a9;
     border-radius: 8%;
     width: 20%;
     height:auto;
+    margin-left: 20px;
   }
+  .box {
+    margin-top: 17px;
+  }
+  .recommend_h5 {
+    margin-left: -300px;
+    margin-top: 30px;
+  }
+
   .info_div {
-    margin-top: -70px;
+    width: 80px;
+    margin-top: -95px;
+    margin-left: 30%;
   }
-  #h5_floor {
+  .h5_floor {
     padding-top: -20px;
   }
   .before_div {
-    margin-right: -70%;
-    margin-top: -18%;
+    margin-right: -60%;
+    margin-top: -91px;
+  }
+  .recommend_div_three {
+    float: left;
+    width: 30%;
+    height: 120px;
+    border-radius: 10%;
+    margin-left: 2.5%;
+  }
+  .dialog {
+    width: 100%;
+    height: 100%;
+  }
+  .float_frame {
+    width: 100%;
+    height: 300px;
+    background-color: white;
+    z-index: 9999;
+    margin-top: -700px;
+    position: fixed;
+  }
+  .mask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  .click_div {
+    width: 100%;
+    height: 40px;
+  }
+  .click_left {
+    float: left;
+    width: 49%;
+    height: 40px;
+    text-align: center;
+    background-color: #e0e0e0;
+  }
+  .click_right {
+    float: left;
+    width: 50.9%;
+    height: 40px;
+    background-color: #e6bd77;
+  }
+  .choice_div {
+    margin-top: 8px;
+    width: 100%;
+    height: 30px;
+    border-bottom: 15px solid #faf7fa;
+  }
+  .choice_left {
+    float: left;
+    width: 32%;
+    border-right: 1px solid #9a9a9a;
+  }
+  .choice_center {
+    float: left;
+    width: 33%;
+  }
+  .choice_right {
+    float: left;
+    width: 32%;
+    border-left: 1px solid #9a9a9a;
+  }
+  .p_style {
+    margin-top: 8px;
+  }
+  .center_content {
+    width: 100%;
+    height: 210px;
+  }
+  .center_img {
+    float: left; width: 14%; height: auto; margin-left: 5%; margin-top: 20px
+  }
+  .down_up_img {
+    width: 8px;
+    height: 8px;
+    margin-left: 8px;
   }
 </style>
