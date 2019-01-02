@@ -23,7 +23,7 @@
           <input class="file" name="file" type="file" accept="image/*" hidden @change="preview"/>
         </label>
       </div>
-      <span class="alert">支持png、jpg、jpeg、bmp格式，大小10M以内</span>
+      <span class="alert">支持png、jpg、jpeg、bmp格式，大小2M以内</span>
       <button class="submit" @click="upload">提交</button>
       <mt-spinner class="spinner" id="spinner" type="snake" v-show="showSpinner"></mt-spinner>
     </div>
@@ -93,7 +93,7 @@
       preview: function (e) {
         let file = e.target.files[0];
         let size = (file.size / 1024 / 1024).toFixed(2);
-        if (size >= 10) {
+        if (size >= 2) {
           Toast('图片过大：' + size + 'M');
           file = null;
           return;
