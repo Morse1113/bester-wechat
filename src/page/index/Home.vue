@@ -11,10 +11,10 @@
       </div>
     </div>
     <div class="row">
-      <img  v-for="item in firstRow" class="recommend-img" :src=item.img @click="jump(item.link)">
+      <img v-for="item in firstRow" class="recommend-img" :src=item.img @click="jump(item)">
     </div>
     <div class="row">
-      <img v-for="item in secondRow" class="recommend-img" :src=item.img @click="jump(item.link)">
+      <img v-for="item in secondRow" class="recommend-img" :src=item.img @click="jump(item)">
     </div>
     <div class="ad">
       <img class="featured" src="../../assets/banner4.png" @click="jump()">
@@ -61,12 +61,14 @@
   import vip from '../../assets/vip.png'
   import Swiper from 'swiper'
   import 'swiper/dist/css/swiper.min.css'
+  import {service} from "../../js/api";
 
   export default {
     name: "Home",
 
     data() {
       return {
+        code: this.$route.query.code,
         banners: [
           {
             img: banner1,
@@ -133,11 +135,30 @@
         },
         effect: 'slide',
         direction: 'horizontal',
-      })
+      });
+      this.addUserInfo();
     },
     methods: {
-      jump: function (address) {
-        this.$router.push(address);
+      jump: function (item) {
+        if (this.code === null) {
+          this.$router.push(item.link);
+          return;
+        }
+        console.log('else------------>')
+        this.$router.push({
+          path: item.link, query: {
+            code: this.code
+          }
+        });
+        console.log('leave home------------->');
+      },
+      addUserInfo: function () {
+        service('get', '/wechat/addUserInfo', {
+          code: this.code
+        }).then(data => {
+          this.code = data.data.code;
+          console.log(this.code)
+        })
       }
     }
   }

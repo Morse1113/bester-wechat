@@ -19,7 +19,10 @@ export function service(method, url, params = {}) {
       }
       if (response.data.code === 401) {
         MessageBox('提示', '您尚未登录');
-        app.$router.replace('/user-login');
+        app.$router.push({
+          path: '/user-login',
+          params: params
+        });
         return {
           code: 200,
           message: '没有登录',

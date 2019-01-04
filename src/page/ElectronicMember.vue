@@ -1,7 +1,7 @@
 <template>
   <div class="all">
     <div class="userInfo">
-      <img class="avatar" :src=avatar><br/>
+      <img class="avatar" :src=headImgUrl><br/>
       <div class="nickname-div">
         <span class="nickname">{{nickname}}</span>
       </div>
@@ -9,13 +9,13 @@
         <span class="right" style="font-weight: bolder">比斯特金:<span class="" style="font-size: x-large">{{besterGold}}</span></span>
       </div>
     </div>
-    <div v-show="showBlackGoldCard" class="BG-card">
+    <div class="BG-card">
       <div class="card-div">
-        <img class="card" :src="BGcard">
+        <img class="card" :src="card">
       </div>
       <div class="firstHalf">
-        <img class="cardNumber" :src=img v-for="img in firstHalf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <img class="cardNumber" :src=img v-for="img in secondHalf">
+        <img v-show="firstHalf !== null" class="cardNumber" :src=img v-for="img in firstHalf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img v-show="secondHalf !== null" class="cardNumber" :src=img v-for="img in secondHalf">
       </div>
       <div class="bindTime">
         <span class="time">{{bindTime}}</span>
@@ -34,6 +34,7 @@
   import background from '../assets/electronicMember/background.png'
   import banner from '../assets/electronicMember/banner.png'
   import BGcard from '../assets/electronicMember/BG-card.png'
+  import SliverCard from '../assets/electronicMember/Sliver-card.png'
 
   import B from '../assets/electronicMember/B.png'
   import G from '../assets/electronicMember/G.png'
@@ -55,21 +56,22 @@
   import BGmall from '../assets/electronicMember/BG-mall.png'
   import mallFan from '../assets/electronicMember/mall-fan.png'
   import services from '../assets/electronicMember/customer-service.png'
-  import {service} from "../js/api";
+  import {service} from "../js/api"
 
   export default {
     name: "ElectronicMember",
     data() {
       return {
-        avatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2918796768,2215175715&fm=26&gp=0.jpg',
-        nickname: 'IRON',
+        nickname: '',
+        headImgUrl: '',
         besterGold: '',
-        showBlackGoldCard: false,
         firstHalf: [],
         secondHalf: [],
         bindTime: '',
         background: background,
-        BGcard: BGcard,
+        BGCard: BGcard,
+        SliverCard: SliverCard,
+        card: '',
         numberMap: {},
         banner: banner,
         firstRow: [
@@ -113,6 +115,7 @@
     mounted() {
       this.findBesterGold();
       this.getBlackGoldId();
+      this.getUser();
       this.numberMap = new Map();
       this.numberMap.set('B', B);
       this.numberMap.set('G', G);
@@ -138,7 +141,7 @@
       getBlackGoldId: function () {
         service('get', '/blackGold/cardId', {}).then(data => {
           if (data.code === 200 && data.data !== null) {
-            this.showBlackGoldCard = true;
+            this.card = BGcard
             let cardId = data.data.cardId;
             let bindTime = data.data.bindTime;
             let year = bindTime.slice(2,4);
@@ -148,6 +151,8 @@
             let secondHalf = cardId.slice(6, 12);
             this.conversionCardArray(firstHalf, 1);
             this.conversionCardArray(secondHalf, 2);
+          } else {
+            this.card = SliverCard
           }
         })
       },
@@ -163,6 +168,22 @@
       },
       jump: function (address) {
         this.$router.push(address);
+      },
+      getUser: function () {
+        let code = this.$route.query.code;
+        service('get', '/wechat/userInfo', {
+          code: code
+        }).then(data =>{
+          console.log('userInfo------------>')
+          console.log(data)
+          if (data.code === 200) {
+            this.nickname = data.data.userInfo.nickname;
+            this.headImgUrl = data.data.userInfo.headImgUrl;
+          } else {
+            this.nickname = '亚欧小镇';
+            this.headImgUrl = 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2918796768,2215175715&fm=26&gp=0.jpg';
+          }
+        })
       }
     }
   }
@@ -187,9 +208,9 @@
   }
 
   .right-div {
-    width: 120px;
+    width: 170px;
     position: absolute;
-    top: 75px;
+    top: 80px;
     left: 52%;
   }
 
@@ -220,7 +241,7 @@
   .time {
     color: #e6bd77;
   }
-  
+
   .card {
     width: 100%;
   }

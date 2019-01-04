@@ -10,10 +10,11 @@ import ElectronicMember from "../page/ElectronicMember";
 Vue.use(Router);
 
 let router = new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
-      redirect: '/user-login'
+      redirect: 'http://localhost:8080/wechat/authorization'
     },
     {
       path: '/brand-list',

@@ -30,7 +30,8 @@
         verifyCode: '',
         count: '',
         show: true,
-        timer: null
+        timer: null,
+        jumpParams: this.$route.query.params,
       }
     },
     beforeCreate() {
@@ -90,7 +91,10 @@
             Toast(response.message);
             return
           }
-          app.$router.replace('/user-info');
+          app.$router.push({
+            path: '/home',
+            code: this.jumpParams
+          });
         })
       }
     }
