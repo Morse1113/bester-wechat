@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import BrandList from '@/components/BrandList'
 import UserLogin from '@/components/UserLogin'
 import UserInfo from '@/components/UserInfo'
-import Identity from '@/components/Identity'
+import Identity from '@/page/Identity'
 import CouponList from '@/page/CouponList'
 Vue.use(Router);
 
