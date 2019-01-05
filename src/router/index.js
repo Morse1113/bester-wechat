@@ -4,7 +4,7 @@ import BrandList from '@/components/BrandList'
 import UserLogin from '@/components/UserLogin'
 import UserInfo from '@/components/UserInfo'
 import Identity from '@/components/Identity'
-
+import CouponList from '@/page/CouponList'
 Vue.use(Router);
 
 let router = new Router({
@@ -44,7 +44,15 @@ let router = new Router({
       meta: {
         title: '实名认证'
       }
-    }
+    },
+    {
+      path: '/CouponList',
+      name: 'CouponList',
+      component: CouponList,
+      meta: {
+        title: '优惠卷列表'
+      }
+    },
   ]
 });
 
