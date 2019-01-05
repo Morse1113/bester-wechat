@@ -144,20 +144,17 @@
           this.$router.push(item.link);
           return;
         }
-        console.log('else------------>')
         this.$router.push({
           path: item.link, query: {
             code: this.code
           }
         });
-        console.log('leave home------------->');
       },
       addUserInfo: function () {
         service('get', '/wechat/addUserInfo', {
           code: this.code
         }).then(data => {
           this.code = data.data.code;
-          console.log(this.code)
         })
       }
     }

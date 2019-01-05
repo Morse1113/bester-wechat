@@ -6,7 +6,7 @@
         <span class="nickname">{{nickname}}</span>
       </div>
       <div class="right-div">
-        <span class="right" style="font-weight: bolder">比斯特金:<span class="" style="font-size: x-large">{{besterGold}}</span></span>
+        <span class="right" style="font-weight: bolder; font-size: small">比斯特金:<span class="" style="font-size: large">{{besterGold}}</span></span>
       </div>
     </div>
     <div class="BG-card">
