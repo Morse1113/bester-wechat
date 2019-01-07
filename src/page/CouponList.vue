@@ -29,8 +29,8 @@
       <li class="more_loading">
         <mt-spinner class="class-spinner" type="triple-bounce" color="#00ccff" :size="10"
                     v-show="!moreLoading&&!allLoaded"></mt-spinner>
-        <span v-show="allLoaded">已全部加载</span>
-        <span v-show="noData">暂无优惠卷信息</span>
+        <span class="div-info" v-show="allLoaded">已全部加载</span>
+        <span class="div-info" v-show="noData">暂无优惠卷信息</span>
       </li>
     </ul>
   </div>
@@ -232,6 +232,10 @@
     font-family: STHeiti;
     position: relative;
     top:20%;
+  }
+  .div-info{
+    font-size: 18px;
+    font-family: STHeiti;
   }
 
   .div-left-1 {
