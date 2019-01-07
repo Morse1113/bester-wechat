@@ -11,38 +11,40 @@
         <p><img src="../assets/12.png" alt="">代金券：<span class="user-identity">{{voucherAmount}}</span>
           <button class="btn btn-sm voucher-btn" @click="voucherShow=true">&nbsp;充值&nbsp;</button>
         </p>
-        <button class="logout" @click="logout()">退出登录</button>
       </div>
     </div>
 
     <!--黑金会籍绑定输入框-->
+    <img class="input-background" src="../assets/input-bg.png" v-show="bgShow">
     <div class="card-input" v-show="bgShow">
-      <img class="input-background" src="../assets/input-bg.png">
       <p>
-        <img class="input-left" src="../assets/left.png">
+        <img class="sides" src="../assets/left.png">
         <span>黑金会籍注册通道</span>
-        <img class="input-right" src="../assets/right.png">
+        <img class="sides" src="../assets/right.png">
       </p>
-      <p class="bg-input">
-        <input class="bg-card" type="text" placeholder="卡号" maxlength="12" required="required" v-model="blackGoldCard"/>
-        <input class="bg-pwd" type="text" placeholder="卡密" maxlength="8" required="required" v-model="blackGoldPwd"/>
-        <button class="heijin-bind" @click="bindBgCard()">激活黑金会籍</button>
+      <p class="input-class">
+        <input type="text" placeholder="卡号" maxlength="12" required="required" v-model="blackGoldCard"/>
       </p>
-      <img class="close-img" src="../assets/close.png" @click="bgShow=false"/>
+      <p class="input-class">
+        <input type="text" placeholder="卡密" maxlength="8" required="required" v-model="blackGoldPwd"/>
+      </p>
+      <button class="submit-btn" @click="bindBgCard()">激活黑金会籍</button>
+      <img class="close-img" src="../assets/close.png" v-show="bgShow" v-on:click="bgShow=false"/>
     </div>
 
     <!--代金券充值输入框-->
+    <img class="input-background" src="../assets/input-bg.png" v-show="voucherShow">
     <div class="card-input" v-show="voucherShow">
-      <img class="input-background" src="../assets/input-bg.png">
-      <p><img class="input-left" src="../assets/left.png">
+      <p class="title">
+        <img class="sides" src="../assets/left.png">
         <span>代金券充值</span>
-        <img class="input-right" src="../assets/right.png">
+        <img class="sides" src="../assets/right.png">
       </p>
-      <p class="bg-input">
-        <input class="voucher-card" type="text" placeholder="卡号" maxlength="16" required="required" v-model="voucherCard"/>
-        <button class="voucher-bind" @click="bindVoucherCard()">立即充值</button>
+      <p class="voucher-card">
+        <input type="text" placeholder="卡号" maxlength="16" required="required" v-model="voucherCard"/>
       </p>
-      <img class="close-img" src="../assets/close.png" @click="voucherShow=false"/>
+      <button class="submit-btn" @click="bindVoucherCard()">立即充值</button>
+      <img class="close-img" src="../assets/close.png" v-show="voucherShow" v-on:click="voucherShow=false"/>
     </div>
   </div>
 </template>
@@ -51,7 +53,6 @@
   import {service} from "../js/api";
   import {MessageBox} from "mint-ui";
   import {Toast} from 'mint-ui';
-  import app from "@/main";
   import $ from 'jquery'
 
   export default {
@@ -74,11 +75,6 @@
       this.userInfoDetail();
     },
     mounted () {
-      const height = window.innerHeight;
-      if (height > 800) {
-        $('.card-input p').css({"top": "37%"});
-        $('.heijin-bind').css({"top": "40%"});
-      }
       const deviceHeight = document.documentElement.clientHeight + "px";
       $('input').on("click", function () {
         console.log(deviceHeight);
@@ -132,12 +128,6 @@
             this.userInfoDetail();
           }
         })
-      },
-      logout: function () {
-        service('post', '/user/logout', {}).then(response => {
-          Toast('退出成功');
-          app.$router.replace('/user-login');
-        })
       }
     }
   }
@@ -146,8 +136,6 @@
 <style scoped>
 
   .container {
-    height: 100%;
-    width: 100%;
     background-image: url("../assets/bg.png");
     background-size: cover;
     background-position: center 100%;
@@ -158,11 +146,11 @@
     margin-top: -5px;
     background-color: #DAA24B;
     font-weight: lighter;
-    border-radius: 15px;
+    border-radius: 16px;
     outline: none;
     border: none;
     color: #78482F;
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .voucher-btn {
@@ -170,20 +158,19 @@
     margin-top: -5px;
     background-color: #DAA24B;
     font-weight: lighter;
-    border-radius: 15px;
+    border-radius: 16px;
     outline: none;
     border: none;
     color: #78482F;
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .info-container {
     position: relative;
     margin: 0 auto;
-    left: 0;
-    right: 0;
-    top: 30%;
-    width: 90%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 85%;
   }
 
   .info-container img {
@@ -194,16 +181,36 @@
     width: 25px;
   }
 
-  .card-input {
-    position: fixed;
-    margin: 0 auto;
-    top: 28%;
-    width: 76%;
-    height: 100%;
-    left: 0;
-    right: 0;
-    font-size: 15px;
+  .input-background {
+    position: absolute;
+    margin:auto;
+    top:50%;
+    transform: translateY(-50%);
+    right:0;
+    bottom:0;
+    left:0;
+    width: 300px;
+    font-size: 16px;
     color: #78482F;
+  }
+
+  .card-input {
+    position: absolute;
+    margin:auto;
+    top:50%;
+    transform: translateY(-50%);
+    right:0;
+    bottom:0;
+    left:0;
+    height: 280px;
+    font-size: 16px;
+    color: #78482F;
+  }
+
+  .sides {
+    position: relative;
+    width: 30px;
+    top: 7px;
   }
 
   .card-input span {
@@ -212,101 +219,45 @@
     font-weight: bold;
   }
 
-  .input-background {
-    width: 100%;
-  }
-
-  .card-input p {
-    position: fixed;
-    margin: 0 auto;
-    top: 41%;
-    left: 0;
-    right: 0;
-  }
-
-  .input-left {
-    width: 8%;
-  }
-
-  .input-right {
-    width: 8%;
-  }
-
   input {
-    margin: auto;
     border-style: none;
     outline: none;
     background-color: #c79f67;
+    height: 28px;
+    width: 200px;
+    border-radius: 5px;
   }
 
-  .bg-input {
-    width: 100%;
-    height: 30%;
+  .input-class {
+    height: 20px;
   }
 
-  .bg-card {
+  .submit-btn {
     position: relative;
     display: block;
     margin: 0 auto;
-    width: 50%;
-    top: 20%;
-  }
-
-  .bg-pwd {
-    position: relative;
-    display: block;
-    margin: 0 auto;
-    width: 50%;
-    top: 22%;
-  }
-
-  .heijin-bind {
-    position: relative;
-    display: block;
-    margin: 0 auto;
-    top: 60%;
+    top: 60px;
     background-color: #DAA24B;
     font-weight: lighter;
-    border-radius: 15px;
+    border-radius: 40px;
     outline: none;
     border: none;
     color: #78482F;
-    font-size: 16px;
-    width: 40%;
-    height: 15%;
+    font-size: 18px;
+    width: 160px;
+    height: 40px;
   }
 
   .voucher-card {
     position: relative;
-    display: block;
-    margin: 0 auto;
-    width: 50%;
-    top: 50px;
-    height: 30px;
-  }
-
-  .voucher-bind {
-    position: relative;
-    display: block;
-    margin: 0 auto;
-    top: 150px;
-    background-color: #DAA24B;
-    font-weight: lighter;
-    border-radius: 15px;
-    outline: none;
-    border: none;
-    color: #78482F;
-    font-size: 16px;
-    width: 40%;
-    height: 15%;
+    top: 20px;
+    height: 60px;
   }
 
   .close-img {
-    position: fixed;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    width: 8%;
+    position: relative;
+    top: 100px;
+    width: 30px;
   }
 
   .info-container p {
@@ -329,21 +280,6 @@
     text-align: right;
     border-right: 1px solid;
     border-color: black;
-  }
-
-  .logout {
-    position: relative;
-    display: block;
-    margin: 0 auto;
-    background-color: #DAA24B;
-    font-weight: lighter;
-    border-radius: 15px;
-    outline: none;
-    border: none;
-    color: #78482F;
-    font-size: 16px;
-    width: 40%;
-    height: 15%;
   }
 
   ::-webkit-input-placeholder {
