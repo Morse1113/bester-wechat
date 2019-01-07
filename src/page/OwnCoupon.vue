@@ -1,25 +1,25 @@
 <template>
   <div id="max">
     <div id="head">
-      <div id="switch">
-        <div id="status1" v-on:click="getCouponList(1)">已领取</div>
-        <div id="status2" v-on:click="getCouponList(2)">已使用</div>
-        <div id="status3" v-on:click="getCouponList(3)">已过期</div>
-      </div>
+      <div id="status1" v-on:click="getCouponList(1)">已领取</div>
+      <div id="status2" v-on:click="getCouponList(2)">已使用</div>
+      <div id="status3" v-on:click="getCouponList(3)">已过期</div>
     </div>
     <div id="userCoupon">
       <div class="coupon" v-for="(coupon,index) in couponList">
         <div class="left">
-          <div class="leftOne" v-show="coupon.couponType==1">￥{{coupon.offerCash}}</div>
-          <div class="leftOne" v-show="coupon.couponType==2">{{coupon.offerDiscount}}折</div>
-          <div class="leftTwo">满{{coupon.threshold}}元可用</div>
+          <div class="leftOne" v-show="coupon.couponType==1"><span id="y">￥</span><span>{{coupon.offerCash}}</span></div>
+          <div class="leftOne" v-show="coupon.couponType==2"><span>{{coupon.offerDiscount}}折</span></div>
+          <div class="leftTwo"><span>满{{coupon.threshold}}元可用</span></div>
         </div>
         <div class="right">
           <div class="rightOne"><span>{{coupon.couponName}}</span></div>
           <div class="rightTwo">
-            <span v-show="status!=2">有效期至:{{buildDate(coupon.failureTime)}}</span>
-            <span v-show="status==2">使用日期:{{buildDate(coupon.updateTime)}}</span>
-            <span class="use" v-show="status==1">立即使用</span>
+            <span v-show="status!=2" class="rightTwoOne">有效期至:</span>
+            <span v-show="status!=2" class="rightTwoTwo">{{buildDate(coupon.failureTime)}}</span>
+            <span v-show="status==2" class="rightTwoTwo">使用日期:</span>
+            <span v-show="status==2" class="rightTwoTwo">{{buildDate(coupon.updateTime)}}</span>
+            <span class="use" v-show="status==1">去使用</span>
             <span class="use" v-show="status==2">已使用</span>
             <span class="use" v-show="status==3">已过期</span>
           </div>
@@ -29,8 +29,9 @@
           <div class="rightThree" v-show="status==3"><span>使用规则 ></span></div>
         </div>
         <div class="rule" v-show="rule==index && status==1" :id="'index_' + index">
-          <span id="prompt">{{coupon.description}}</span>
-          <span v-on:click="changeClassAndValue(index)" id="receive">▲收起</span></div>
+          <div id="prompt">{{coupon.description}}</div>
+          <div v-on:click="changeClassAndValue(index)" id="receive"><span>▲收起</span></div>
+        </div>
       </div>
       <div class="isBlank" v-show="isBlank && status==1">您还没有优惠券，快去领券吧！</div>
       <div class="isBlank" v-show="!isBlank && status==1">到底了，没有更多了，快去使用吧!</div>
@@ -61,11 +62,11 @@
       getCouponList(status) {
         switch (status) {
           case 1:
-            if(this.rule!=-1){
+            if (this.rule != -1) {
               let id = "#index_" + this.rule
               $(id).parent().removeClass("message")
               $(id).parent().addClass("coupon")
-              this.rule=-1
+              this.rule = -1
             }
             $("#userCoupon").removeClass()
             $("#userCoupon").addClass("userCouponOne")
@@ -77,7 +78,7 @@
             $("#status3").addClass("statusColorTwo");
             break;
           case 2:
-            if(this.rule!=-1){
+            if (this.rule != -1) {
               let id = "#index_" + this.rule
               $(id).parent().removeClass("message")
               $(id).parent().addClass("coupon")
@@ -92,7 +93,7 @@
             $("#status3").addClass("statusColorTwo");
             break;
           case 3:
-            if(this.rule!=-1){
+            if (this.rule != -1) {
               let id = "#index_" + this.rule
               $(id).parent().removeClass("message")
               $(id).parent().addClass("coupon")
@@ -122,17 +123,7 @@
         })
       },
       buildDate(time) {
-        let date = new Date(time),
-          year = date.getFullYear(),
-          month = date.getMonth() + 1,
-          day = date.getDate(),
-          hour = date.getHours(),
-          min = date.getMinutes()
-        return year + '-' +
-          (month < 10 ? '0' + month : month) + '-' +
-          (day < 10 ? '0' + day : day) + ' ' +
-          (hour < 10 ? '0' + hour : hour) + ':' +
-          (min < 10 ? '0' + min : min)
+        return time.substring(0, time.lastIndexOf("-") + 3).replace(/-/g, "/")
       },
       changeSizeAndValue(index) {
         if (this.rule != -1) {
@@ -159,58 +150,42 @@
   #max {
     width: 100%;
     font-family: 思源黑体;
-    height: 100%;
+    background: #faf7fa;
+    overflow-y: auto;
   }
 
   #head {
     position: fixed;
-    background-color: white;
+    font-size: 16px;
     z-index: 1000;
-    height: 10%;
+    height: 53px;
     width: 100%;
-  }
-
-  #switch {
-    margin-top: 2.5%;
-    height: 100%;
-    width: 100%;
+    background-color: #faf7fa;
   }
 
   #status1 {
     font-size: 100%;
-    padding-top: 3%;
-    height: 58%;
+    padding-top: 10px;
+    height: 35px;
     width: 33.3%;
-    color: black;
     float: left;
-  }
-#prompt{
-  padding-left: 5%;
-  display: inline-block;
-  float:left;
-}
-  #receive {
-    display: inline-block;
-    float: right;
-    border-radius: 14px;
-    padding-right: 5%;
   }
 
   #status2 {
     font-size: 100%;
-    padding-top: 3%;
-    height: 58%;
-    width: 33.3%;
-    color: black;
+    padding-top: 10px;
+    border-left: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    height: 35px;
+    width: 32.7%;
     float: left;
   }
 
   #status3 {
     font-size: 100%;
-    padding-top: 3%;
-    height: 58%;
+    padding-top: 10px;
+    height: 35px;
     width: 33.3%;
-    color: black;
     float: right;
   }
 
@@ -223,33 +198,23 @@
   }
 
   #userCoupon {
-    padding-top: 15%;
+    padding-top: 45px;
     width: 100%;
     height: 80%;
   }
 
   .userCouponOne .message {
-    margin-top: 3%;
+    margin-top: 8px;
     width: 100%;
-    height: 28.5%;
-    background-color: #f2f2f2;
+    height: 130px;
+    background-color: white;
   }
 
   #userCoupon .coupon {
-    margin-top: 3%;
+    margin-top: 8px;
     width: 100%;
-    height: 20%;
-    background-color: #f2f2f2;
-  }
-
-  .rule {
-    border-top: 4px solid white;
-    text-align: left;
-    clear: both;
-    width: 100%;
-    height: 30%;
-    font-size: 50%;
-    color:#a8a8a8;
+    height: 90px;
+    background-color: white;
   }
 
   .userCouponOne .coupon .left {
@@ -267,58 +232,97 @@
   .coupon .left {
     float: left;
     width: 35%;
-    height: 100%;
+    height: 90px;
   }
 
   .coupon .right {
     float: left;
     width: 60%;
-    height: 100%;
+    height: 90px;
   }
 
   .message .left {
     float: left;
     width: 35%;
-    height: 70%;
+    height: 90px;
   }
 
   .message .right {
     float: left;
     width: 60%;
-    height: 70%;
+    height: 90px;
   }
 
   .left .leftOne {
     font-weight: bolder;
-    padding-top: 20%;
-    height: 30%;
+    padding-top: 17px;
+    height: 27px;
     width: 100%;
-    font-size: 200%;
+    font-size: 25px;
+  }
+
+  #y{
+    font-size: 14px;
   }
 
   .left .leftTwo {
-    padding-top: 4%;
-    font-size: 100%;
+    padding-top: 15px;
+    font-size: 13px;
     width: 100%;
   }
 
   .right .rightOne {
-    margin-top: 10%;
+    margin-top: 9px;
     font-weight: bolder;
-    font-size: 100%;
+    font-size: 13px;
     width: 100%;
-    height: 20%;
+    height: 18px;
   }
 
   .right .rightTwo {
-    padding-top: 1.5%;
-    font-size: 70%;
+    padding-top: 14px;
     width: 100%;
-    height: 20%;
+    height: 18px;
+  }
+
+  .right .rightTwo .rightTwoOne {
+    font-size: 11px;
+  }
+
+  .right .rightTwo .rightTwoTwo {
+    font-size: 11px;
+  }
+
+  .userCouponOne .coupon .right .use {
+    float: right;
+    padding: 4px 11px 4px;
+    font-size: 12px;
+    font-weight: bolder;
+    border-radius: 25px;
+    background-color: #e6bd77;
+  }
+
+  .userCouponOne .message .right .use {
+    float: right;
+    padding: 4px 11px 4px;
+    font-size: 12px;
+    font-weight: bolder;
+    border-radius: 25px;
+    background-color: #e6bd77;
+  }
+
+  .userCouponTwo .coupon .right .use {
+    float: right;
+    padding: 4px 11px 4px;
+    font-size: 12px;
+    font-weight: bolder;
+    border-radius: 25px;
+    background-color: #e0e0e0;
   }
 
   .right .rightThree {
-    font-size: 40%;
+    padding-top: 5px;
+    font-size: 10px;
     width: 100%;
     height: 20%;
   }
@@ -327,39 +331,38 @@
     text-align: left;
   }
 
-  .userCouponOne .coupon .right .use {
-    float: right;
-    padding: 2% 6% 2%;
-    font-size: 120%;
-    font-weight: bolder;
-    border-radius: 25px;
-    background-color: #e6bd77;
+  .rule {
+    border-top: 4px solid #faf7fa;
+    text-align: left;
+    clear: both;
+    width: 100%;
+    height: 32px;
+    font-size: 10px;
   }
 
-  .userCouponOne .message .right .use {
-    float: right;
-    padding: 2% 6% 2%;
-    font-size: 120%;
-    font-weight: bolder;
-    border-radius: 25px;
-    background-color: #e6bd77;
+  #prompt {
+    color: #a8a8a8;
+    height: 100%;
+    width: 80%;
+    padding-left: 10px;
+    float: left;
   }
 
-  .userCouponTwo .coupon .right .use {
+  #receive {
+    text-align: center;
+    height: 100%;
+    width: 12%;
     float: right;
-    padding: 2% 6% 2%;
-    font-size: 120%;
-    font-weight: bolder;
-    border-radius: 20px;
-    background-color: #e0e0e0;
+    padding-right: 10px;
+    padding-top: 10px;
   }
 
   .isBlank {
     text-align: center;
-    padding-top: 10%;
+    padding-top: 32px;
     width: 100%;
-    height: 10%;
-    font-size: 100%;
+    height: 46px;
+    font-size: 16px;
   }
 
 </style>
