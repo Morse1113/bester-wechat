@@ -21,7 +21,7 @@ export function service(method, url, params = {}) {
         MessageBox('提示', '您尚未登录');
         app.$router.push({
           path: '/user-login',
-          params: params
+          query: params
         });
         return {
           code: 200,

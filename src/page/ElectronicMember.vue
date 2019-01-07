@@ -142,13 +142,13 @@
         service('get', '/blackGold/cardId', {}).then(data => {
           if (data.code === 200 && data.data !== null) {
             this.card = BGcard
-            let cardId = data.data.cardId;
-            let bindTime = data.data.bindTime;
-            let year = bindTime.slice(2,4);
-            let month = bindTime.slice(4,7);
+            var cardId = data.data.cardId;
+            var bindTime = data.data.bindTime;
+            var year = bindTime.slice(2,4);
+            var month = bindTime.slice(4,7);
             this.bindTime = month + '/' + year;
-            let firstHalf = cardId.slice(0, 6);
-            let secondHalf = cardId.slice(6, 12);
+            var firstHalf = cardId.slice(0, 6);
+            var secondHalf = cardId.slice(6, 12);
             this.conversionCardArray(firstHalf, 1);
             this.conversionCardArray(secondHalf, 2);
           } else {
@@ -157,8 +157,8 @@
         })
       },
       conversionCardArray: function (halfCard, type) {
-        for (let i = 0; i < halfCard.length; i++) {
-          let img = this.numberMap.get(halfCard[i]);
+        for (var i = 0; i < halfCard.length; i++) {
+          var img = this.numberMap.get(halfCard[i]);
           if (type === 1) {
             this.firstHalf.push(img);
           } else {
@@ -170,12 +170,10 @@
         this.$router.push(address);
       },
       getUser: function () {
-        let code = this.$route.query.code;
+        var code = this.$route.query.code;
         service('get', '/wechat/userInfo', {
           code: code
         }).then(data =>{
-          console.log('userInfo------------>')
-          console.log(data)
           if (data.code === 200) {
             this.nickname = data.data.userInfo.nickname;
             this.headImgUrl = data.data.userInfo.headImgUrl;

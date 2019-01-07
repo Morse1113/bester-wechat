@@ -31,7 +31,7 @@
         count: '',
         show: true,
         timer: null,
-        jumpParams: this.$route.query.params,
+        jumpParams: this.$route.query.code,
       }
     },
     beforeCreate() {

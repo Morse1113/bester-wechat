@@ -6,6 +6,7 @@ import UserInfo from '@/components/UserInfo'
 import Identity from '@/components/Identity'
 import Home from "../page/index/Home";
 import ElectronicMember from "../page/ElectronicMember";
+import WeChatAuthorization from '../page/WeChatAuthorization'
 
 Vue.use(Router);
 
@@ -14,7 +15,11 @@ let router = new Router({
   routes: [
     {
       path: '/',
-      redirect: 'http://localhost:8080/wechat/authorization'
+      name: 'WeChatAuthorization',
+      component: WeChatAuthorization,
+      meta: {
+        title: '微信授权'
+      }
     },
     {
       path: '/brand-list',
