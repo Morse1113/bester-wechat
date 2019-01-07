@@ -13,9 +13,7 @@
     methods: {
       toRedirect: function () {
         service('get', '/wechat/authorization', {}).then(data => {
-          if (data.code === 200) {
-            window.location.href=data.data.redirectUrl;
-          }
+            window.location.href=data;
         })
       }
     }
