@@ -10,11 +10,11 @@
     <div class="recommend_slogan"><h5 class="h5_slogan">推荐品牌</h5></div>
     <div class="fill_div"></div>
     <div class="recommend_div">
-      <div class="recommend_div_three" @click="recommend1()"><img v-bind:src="logo1" class="recommend_img_three"/><br/>
+      <div class="recommend_div_three" @click="recommend1()"><img v-bind:src="logo1" class="recommend_img_three" @click="BrandInfo(brandIds1)"/><br/>
         <p class="p_size">{{brandNames1}}</p></div>
-      <div class="recommend_div_three" @click="recommend2()"><img v-bind:src="logo2" class="recommend_img_three"/><br/>
+      <div class="recommend_div_three" @click="recommend2()"><img v-bind:src="logo2" class="recommend_img_three" @click="BrandInfo(brandIds2)"/><br/>
         <p class="p_size">{{brandNames2}}</p></div>
-      <div class="recommend_div_three" @click="recommend3()"><img v-bind:src="logo3" class="recommend_img_three"/><br/>
+      <div class="recommend_div_three" @click="recommend3()"><img v-bind:src="logo3" class="recommend_img_three" @click="BrandInfo(brandIds3)"/><br/>
         <p class="p_size">{{brandNames3}}</p></div>
     </div>
     <div class="all_slogan"><h5 class="h5_slogan">所有品牌</h5></div>
@@ -82,7 +82,12 @@
         <div class="center_content" id="state3">
           <div class="center_left">亚欧国际小镇</div>
           <div class="right_div">
-            <mt-picker :slots="sort" @change="onSortChange"></mt-picker>
+            <mt-picker :slots="sort" @c
+
+
+
+
+                       hange="onSortChange"></mt-picker>
           </div>
         </div>
         <div class="click_div">
@@ -271,9 +276,9 @@
       },
       clickRight(){
         $(".dialog").hide();
-        console.log(this.choiceTypes);
-        console.log(this.choiceSort);
-        console.log(this.choiceFloor);
+        console.log("choiceTypes:"+this.choiceTypes);
+        console.log("choiceFloor:"+this.choiceFloor);
+        console.log("choiceSort:"+this.choiceSort);
         service('get', '/brand/list', {
           brandType: this.choiceTypes,
           orderType: this.choiceSort,
@@ -284,52 +289,36 @@
             return;
           }
           this.searchBack = data.data;
+          this.choiceSort = 0;
+          this.choiceFloor = 0;
+          this.choiceTypes = 0;
         });
       },
       onValuesChange(picker, values){
-//        const fl = values[0];
         this.choiceFloor = values[0].replace(/[^0-9]/ig,"");
-//        service('get', '/brand/list', {
-//          floor: fl
-//        }).then(data => {
-//          if (data.code !== 200) {
-//            alert(data.message);
-//            return;
-//          }
-//          this.searchBack = data.data;
-//        });
+        this.choiceTypes = 0;
+        this.choiceSort = 0;
       },
       onSortChange(picker,values){
         this.val = values[0];
-//        var actionType = 0;
         if (this.val === '点赞排序'){
-//          actionType = 1;
           this.choiceSort = 1;
+          this.choiceTypes = 0;
+          this.choiceFloor = 0;
         } else if (this.val === '收藏排序'){
-//          actionType = 2;
           this.choiceSort = 2;
+          this.choiceTypes = 0;
+          this.choiceFloor = 0;
         }
-//        service('get', '/brand/list', {
-//          orderType: this.choiceSort
-//        }).then(data => {
-//          if (data.code !== 200) {
-//            alert(data.message);
-//            return;
-//          }
-//          this.searchBack = data.data;
-//        });
       },
       choiceType(typeValue) {
+        console.log("type:"+typeValue);
         this.choiceTypes = typeValue;
-//        service('get', '/brand/list', {
-//          brandType: typeValue
-//        }).then(data => {
-//          if (data.code !== 200) {
-//            alert(data.message);
-//            return;
-//          }
-//          this.searchBack = data.data;
-//        });
+        this.choiceSort = 0;
+        this.choiceFloor = 0;
+        $("#state2 img").bind("click",function(){
+          $(this).css("border","1px solid #e6bd77");
+        });
       },
       clickChoice() {
         if (this.states === 1){
@@ -378,7 +367,7 @@
     margin-top: 20px;
     margin-left: -14%;
     width: 75%;
-    height: 34px;
+    height: 30px;
     border: 1px solid #a9a9a9;
     border-radius: 20px;
     padding-left:20px;
@@ -593,7 +582,11 @@
     height: 210px;
   }
   .center_img {
-    float: left; width: 14%; height: auto; margin-left: 5%; margin-top: 20px
+    float: left;
+    width: 14%;
+    height: auto;
+    margin-left: 5%;
+    margin-top: 20px;
   }
   .down_up_img {
     width: 8px;
