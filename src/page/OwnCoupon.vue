@@ -8,7 +8,8 @@
     <div id="userCoupon">
       <div class="coupon" v-for="(coupon,index) in couponList">
         <div class="left">
-          <div class="leftOne" v-show="coupon.couponType==1"><span id="y">￥</span><span>{{coupon.offerCash}}</span></div>
+          <div class="leftOne" v-show="coupon.couponType==1"><span id="y">￥</span><span>{{coupon.offerCash}}</span>
+          </div>
           <div class="leftOne" v-show="coupon.couponType==2"><span>{{coupon.offerDiscount}}折</span></div>
           <div class="leftTwo"><span>满{{coupon.threshold}}元可用</span></div>
         </div>
@@ -167,17 +168,15 @@
     font-size: 100%;
     padding-top: 10px;
     height: 35px;
-    width: 33.3%;
+    width: 33.3333333%;
     float: left;
   }
 
   #status2 {
     font-size: 100%;
     padding-top: 10px;
-    border-left: 1px solid #e0e0e0;
-    border-right: 1px solid #e0e0e0;
     height: 35px;
-    width: 32.7%;
+    width: 33.33333333%;
     float: left;
   }
 
@@ -185,7 +184,7 @@
     font-size: 100%;
     padding-top: 10px;
     height: 35px;
-    width: 33.3%;
+    width: 33.333333333%;
     float: right;
   }
 
@@ -259,10 +258,6 @@
     height: 27px;
     width: 100%;
     font-size: 25px;
-  }
-
-  #y{
-    font-size: 14px;
   }
 
   .left .leftTwo {
@@ -344,7 +339,7 @@
     color: #a8a8a8;
     height: 100%;
     width: 80%;
-    padding-left: 10px;
+    padding-left: 20px;
     float: left;
   }
 
