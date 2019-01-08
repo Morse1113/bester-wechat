@@ -20,8 +20,7 @@ export function service(method, url, params = {}) {
       if (response.data.code === 401) {
         MessageBox('提示', '您尚未登录');
         app.$router.push({
-          path: '/user-login',
-          query: params
+          path: '/user-login'
         });
         return {
           code: 200,

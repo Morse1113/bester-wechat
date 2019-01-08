@@ -170,7 +170,10 @@
         this.$router.push(address);
       },
       getUser: function () {
-        var openId = this.$route.query.openId;
+        var openId = window.localStorage.getItem('openId');
+        if (openId === undefined || openId === '' || openId.length <= 0) {
+          this.$router.push('/');
+        }
         service('get', '/wechat/userInfo', {
           openId: openId
         }).then(data =>{
@@ -180,6 +183,7 @@
           } else {
             this.nickname = '亚欧小镇';
             this.headImgUrl = 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2918796768,2215175715&fm=26&gp=0.jpg';
+            // this.$router.push('/');
           }
         })
       }

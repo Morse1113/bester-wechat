@@ -30,8 +30,7 @@
         verifyCode: '',
         count: '',
         show: true,
-        timer: null,
-        jumpParams: this.$route.query.openId,
+        timer: null
       }
     },
     beforeCreate() {
@@ -92,8 +91,7 @@
             return
           }
           app.$router.push({
-            path: '/home',
-            openId: this.jumpParams
+            path: '/home'
           });
         })
       }

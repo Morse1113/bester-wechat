@@ -141,22 +141,16 @@
     },
     methods: {
       jump: function (item) {
-        if (this.openId === null) {
-          this.$router.push(item.link);
-          return;
-        }
-        this.$router.push({
-          path: item.link, query: {
-            openId: this.openId
-          }
-        });
+        this.$router.push(item.link);
       },
       addUserInfo: function () {
-        service('get', '/wechat/addUserInfo', {
-          code: this.code,
-          userOpenId: this.openId
+        service('get', '/wechat/openId', {
+          code: this.code
         }).then(data => {
-          this.openId = data.data.openId;
+          if (data.code !== 200) {
+            this.$router.push('/');
+          }
+          window.localStorage.setItem('openId', data.data);
         })
       }
     }
