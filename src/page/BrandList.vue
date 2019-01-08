@@ -3,26 +3,24 @@
     <div class="search_div">
       <input placeholder="输入店铺或品牌名称搜索" @keyup.enter="searchs()" v-model="brandName"/>
       <i class="i_div"></i>
-      <div class="screen_div" @click="screenBrand()">
+      <div class="screen_div" @click="dialogShow = true">
         <img id="screen_div_img" src="../assets/shaixuan.png"/>
       </div>
     </div>
     <div class="recommend_slogan"><h5 class="h5_slogan">推荐品牌</h5></div>
     <div class="fill_div"></div>
     <div class="recommend_div">
-      <div class="recommend_div_three" @click="recommend1()"><img v-bind:src="logo1" class="recommend_img_three" @click="BrandInfo(brandIds1)"/><br/>
-        <p class="p_size">{{brandNames1}}</p></div>
-      <div class="recommend_div_three" @click="recommend2()"><img v-bind:src="logo2" class="recommend_img_three" @click="BrandInfo(brandIds2)"/><br/>
-        <p class="p_size">{{brandNames2}}</p></div>
-      <div class="recommend_div_three" @click="recommend3()"><img v-bind:src="logo3" class="recommend_img_three" @click="BrandInfo(brandIds3)"/><br/>
-        <p class="p_size">{{brandNames3}}</p></div>
+      <div class="recommend_div_three" v-for="brand in headerBrands">
+        <img class="recommend_img_three" :src="brand.logo" @click="brandInfo(brand.brandId)"/><br/>
+        <p class="p_size">{{brand.brandName}}</p>
+      </div>
     </div>
     <div class="all_slogan"><h5 class="h5_slogan">所有品牌</h5></div>
     <div v-if="searchBack" class="one_div">
-      <div v-for="result in searchBack" class="box">
+      <div v-for="(result, index) in searchBack" class="box">
         <div class="content">
           <div class="img_div">
-            <img v-bind:src="result.brandLogo" class="image_style" @click="BrandInfo(result.brandId)">
+            <img v-bind:src="result.brandLogo" class="image_style" @click="brandInfo(result.brandId)">
           </div>
           <div class="info_div">
             <h5 class="h5_brand_name">{{result.brandName}}</h5>
@@ -31,24 +29,24 @@
           </div>
           <div class="before_div">
             <template>
-              <div v-if="result.collect==true">
+              <div v-if="result.collect">
                 <h5><img src="../assets/after1.png"
-                         class="like_collect_img" @click="likeAndCollect(result.brandId,type=2)"/>&nbsp;&nbsp;已收藏&nbsp;&nbsp;&nbsp;&nbsp;{{result.collectNum}}
+                         class="like_collect_img" @click="likeAndCollect(index,type=2)"/>&nbsp;&nbsp;已收藏&nbsp;&nbsp;&nbsp;&nbsp;{{result.collectNum}}
                 </h5>
               </div>
-              <div v-else="result.collect==false">
+              <div v-else>
                 <h5><img src="../assets/before1.png"
-                         class="like_collect_img" @click="likeAndCollect(result.brandId,type=2)"/>&nbsp;&nbsp;收藏&nbsp;&nbsp;&nbsp;&nbsp;{{result.collectNum}}
+                         class="like_collect_img" @click="likeAndCollect(index,type=2)"/>&nbsp;&nbsp;收藏&nbsp;&nbsp;&nbsp;&nbsp;{{result.collectNum}}
                 </h5>
               </div>
-              <div v-if="result.like == true">
+              <div v-if="result.like">
                 <h5><img src="../assets/after.png"
-                         class="like_collect_img" @click="likeAndCollect(result.brandId,type=1)"/>&nbsp;&nbsp;已点赞&nbsp;&nbsp;&nbsp;&nbsp;{{result.praiseNum}}
+                         class="like_collect_img" @click="likeAndCollect(index,type=1)"/>&nbsp;&nbsp;已点赞&nbsp;&nbsp;&nbsp;&nbsp;{{result.praiseNum}}
                 </h5>
               </div>
-              <div v-else="result.like == false">
+              <div v-else>
                 <h5><img src="../assets/before.png"
-                         class="like_collect_img" @click="likeAndCollect(result.brandId,type=1)"/>&nbsp;&nbsp;点赞&nbsp;&nbsp;&nbsp;&nbsp;{{result.praiseNum}}
+                         class="like_collect_img" @click="likeAndCollect(index,type=1)"/>&nbsp;&nbsp;点赞&nbsp;&nbsp;&nbsp;&nbsp;{{result.praiseNum}}
                 </h5>
               </div>
             </template>
@@ -57,41 +55,33 @@
       </div>
     </div>
     <div class="bottom_div"><span class="bottom_span">没有更多了~~~~~</span></div>
-    <div class="dialog">
+    <div class="dialog" v-show="dialogShow">
       <div class="mask"></div>
       <div class="float_frame">
         <div class="choice_div">
-          <div class="choice_left" @click="states = 1;clickChoice()">楼号<img src="../assets/down.png" class="down_up_img"
-                                                                            id="recommend_btn1"/></div>
-          <div class="choice_center" @click="states = 2;clickChoice()">业态<img src="../assets/up.png" class="down_up_img"
-                                                                              id="recommend_btn2"/></div>
-          <div class="choice_right" @click="states = 3;clickChoice()">排序<img src="../assets/up.png" class="down_up_img"
-                                                                             id="recommend_btn3"/></div>
+          <div class="choice_left" @click="states=1">楼号<img :src="this.states===1 ? selectedTypes[0] : '../assets/down.png'" class="down_up_img"/></div>
+          <div class="choice_center" @click="states=2">业态<img :src="this.states===2 ? selectedTypes[0] : '../assets/down.png'" class="down_up_img"/></div>
+          <div class="choice_right" @click="states=3">排序<img :src="this.states===3 ? selectedTypes[0] : '../assets/down.png'" class="down_up_img"/></div>
         </div>
-        <div class="center_content" id="state1">
+        <div class="center_content" v-show="this.states===1" id="state1">
           <div class="center_left">亚欧国际小镇</div>
           <div class="right_div">
             <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
           </div>
         </div>
-        <div class="center_content" id="state2">
-          <div v-for="t in types">
-            <img :src="t.img" @click="choiceType(t.valueT)" class="center_img"/>
+        <div class="center_content" v-show="this.states===2" id="state2">
+          <div v-for="(t, index) in types">
+            <img :src="typeSelected === index ? selectedTypes[index] : t" @click="typeSelected=index" class="center_img"/>
           </div>
         </div>
-        <div class="center_content" id="state3">
+        <div class="center_content" v-show="this.states===3" id="state3">
           <div class="center_left">亚欧国际小镇</div>
           <div class="right_div">
-            <mt-picker :slots="sort" @c
-
-
-
-
-                       hange="onSortChange"></mt-picker>
+            <mt-picker :slots="sort" @change="onSortChange"></mt-picker>
           </div>
         </div>
         <div class="click_div">
-          <div class="click_left" @click="clickLeft()"><p class="p_style">取消</p></div>
+          <div class="click_left" @click="dialogShow=false"><p class="p_style">取消</p></div>
           <div class="click_right" @click="clickRight()"><p class="p_style">确定</p></div>
         </div>
       </div>
@@ -100,7 +90,6 @@
 </template>
 <script>
   import {service} from '../js/api'
-  import $ from 'jquery'
   import aolai from '../assets/type/aolai.png'
   import canyin from '../assets/type/canyin.png'
   import ertongguan from '../assets/type/ertongguan.png'
@@ -124,107 +113,39 @@
         sort:[{values: ['默认排序','点赞排序','收藏排序']}],
         val: '',
         states: 1,
-        types: [
-          {
-            valueT: 1,
-            img: yule
-          },
-          {
-            valueT: 2,
-            img: canyin
-          },
-          {
-            valueT: 3,
-            img: aolai
-          },
-          {
-            valueT: 4,
-            img: xiuxian
-          },
-          {
-            valueT: 5,
-            img: xinlingshou
-          },
-          {
-            valueT: 6,
-            img: yingyuan
-          },
-          {
-            valueT: 7,
-            img: liren
-          },
-          {
-            valueT: 8,
-            img: maoyi
-          },
-          {
-            valueT: 9,
-            img: ertongguan
-          },
-          {
-            valueT: 10,
-            img: qinzijiudian
-          }
-        ],
-        logo1: '',
-        logo2: '',
-        logo3: '',
-        brandNames1: '',
-        brandNames2: '',
-        brandNames3: '',
-        brandIds1: 32,
-        brandIds2: 16,
-        brandIds3: 27,
+        typeSelected: -1,
+        types: [yule, canyin, aolai, xiuxian, xinlingshou, yingyuan, liren, maoyi, ertongguan, qinzijiudian],
+        selectedTypes: ['https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1535765175&di=0199743b7f771770da0d2a7369dab307&src=http://www.epbiao.com/Public/upload/remote/2017/08/75571501738934.png'],
+        headerBrandIds: [32, 16, 27],
+        headerBrands: [],
+        dialogShow: false,
         choiceFloor: 0,
         choiceTypes: 0,
         choiceSort: 0
       }
     },
     mounted(){
-      this.recommend1();
-      this.recommend2();
-      this.recommend3();
-      $(".dialog").hide();
+      this.recommend();
       this.query();
-      $("#state2").hide();
-      $("#state3").hide();
     },
     methods: {
-      recommend1(){
-        service('get', '/brand/detail', {
-          brandId: this.brandIds1
-        }).then(data => {
-          if (data.code !== 200) {
-            alert(data.message);
-            return;
-          }
-          this.logo1 = data.data.brandLogo;
-          this.brandNames1 = data.data.brandName;
-        });
-      },
-      recommend2(){
-        service('get', '/brand/detail', {
-          brandId: this.brandIds2
-        }).then(data => {
-          if (data.code !== 200) {
-            alert(data.message);
-            return;
-          }
-          this.logo2 = data.data.brandLogo;
-          this.brandNames2 = data.data.brandName;
-        });
-      },
-      recommend3(){
-        service('get', '/brand/detail', {
-          brandId: this.brandIds3
-        }).then(data => {
-          if (data.code !== 200) {
-            alert(data.message);
-            return;
-          }
-          this.logo3 = data.data.brandLogo;
-          this.brandNames3 = data.data.brandName;
-        });
+      recommend: function() {
+        for (let index = 0; index < this.headerBrandIds.length; index++) {
+          service('get', '/brand/detail', {
+            brandId: this.headerBrandIds[index]
+          }).then(data => {
+            if (data.code !== 200) {
+              alert(data.message);
+              return;
+            }
+            let brandInfo = {
+              brandId: this.headerBrandIds[index],
+              logo: data.data.brandLogo,
+              brandName: data.data.brandName
+            };
+            this.headerBrands.push(brandInfo);
+          });
+        }
       },
       query(){
         service('get', '/brand/list', {
@@ -247,7 +168,7 @@
           this.searchBack = data.data;
         });
       },
-      BrandInfo(brandId){
+      brandInfo(brandId){
         this.$router.push({
           path: '/brand/info',
           query: {
@@ -255,30 +176,28 @@
           }
         })
       },
-      likeAndCollect(brandId,type){
+      likeAndCollect(index, type){
+        let brandInfo = this.searchBack[index];
         service('get','/brand/addNum',{
-          brandId: brandId,
+          brandId: brandInfo.brandId,
           type: type
         }).then(data => {
           if (data.code !== 200) {
             alert(data.message);
             return;
           }
-          this.query();
+          if (type === 1) {
+            brandInfo.like ? brandInfo.praiseNum-- : brandInfo.praiseNum++;
+            brandInfo.like = !brandInfo.like;
+          }
+          if (type === 2) {
+            brandInfo.collect ? brandInfo.collectNum-- : brandInfo.collectNum++;
+            brandInfo.collect = !brandInfo.collect;
+          }
         })
       },
-      screenBrand(){
-        $(".dialog").fadeIn()
-      },
-      clickLeft(){
-        this.query();
-        $(".dialog").hide();
-      },
       clickRight(){
-        $(".dialog").hide();
-        console.log("choiceTypes:"+this.choiceTypes);
-        console.log("choiceFloor:"+this.choiceFloor);
-        console.log("choiceSort:"+this.choiceSort);
+        this.dialogShow = false;
         service('get', '/brand/list', {
           brandType: this.choiceTypes,
           orderType: this.choiceSort,
@@ -309,39 +228,6 @@
           this.choiceSort = 2;
           this.choiceTypes = 0;
           this.choiceFloor = 0;
-        }
-      },
-      choiceType(typeValue) {
-        console.log("type:"+typeValue);
-        this.choiceTypes = typeValue;
-        this.choiceSort = 0;
-        this.choiceFloor = 0;
-        $("#state2 img").bind("click",function(){
-          $(this).css("border","1px solid #e6bd77");
-        });
-      },
-      clickChoice() {
-        if (this.states === 1){
-          $("#state1").show();
-          $("#state2").hide();
-          $("#state3").hide();
-          $("#recommend_btn1").attr('src','../static/img/down.png');
-          $("#recommend_btn2").attr('src','../static/img/up.png');
-          $("#recommend_btn3").attr('src','../static/img/up.png');
-        } else if (this.states === 2){
-          $("#state2").show();
-          $("#state1").hide();
-          $("#state3").hide();
-          $("#recommend_btn1").attr('src','../static/img/up.png');
-          $("#recommend_btn2").attr('src','../static/img/down.png');
-          $("#recommend_btn3").attr('src','../static/img/up.png');
-        } else if (this.states === 3){
-          $("#state3").show();
-          $("#state1").hide();
-          $("#state2").hide();
-          $("#recommend_btn1").attr('src','../static/img/up.png');
-          $("#recommend_btn2").attr('src','../static/img/up.png');
-          $("#recommend_btn3").attr('src','../static/img/down.png');
         }
       }
     }
