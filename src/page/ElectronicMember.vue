@@ -170,9 +170,9 @@
         this.$router.push(address);
       },
       getUser: function () {
-        var code = this.$route.query.code;
+        var openId = this.$route.query.openId;
         service('get', '/wechat/userInfo', {
-          code: code
+          openId: openId
         }).then(data =>{
           if (data.code === 200) {
             this.nickname = data.data.userInfo.nickname;
