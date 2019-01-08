@@ -170,14 +170,7 @@
         this.$router.push(address);
       },
       getUser: function () {
-        let openId = '';
-        let cookie = document.cookie;
-        let cookies = cookie.split(';');
-        for (let index in cookies) {
-          if (cookies[index] === "cookie") {
-            openId = cookies[index];
-          }
-        }
+        let openId = this.getCookieName("cookie");
         if (openId === '' || openId.length <= 0) {
           this.$router.push('/');
         }
@@ -193,6 +186,18 @@
             // this.$router.push('/');
           }
         })
+      },
+      getCookieName: function (cname) {
+        let name = cname + "=";
+        let ca = document.cookie.split(';');
+        for(let i=0; i<ca.length; i++)
+        {
+          let c = ca[i].trim();
+          if (c.indexOf(name)===0) {
+            return c.substring(name.length,c.length);
+          }
+        }
+        return "";
       }
     }
   }
