@@ -150,7 +150,6 @@
           if (data.code !== 200) {
             this.$router.push('/');
           }
-          window.localStorage.setItem('openId', data.data);
         })
       }
     }

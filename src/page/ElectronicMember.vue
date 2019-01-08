@@ -170,8 +170,15 @@
         this.$router.push(address);
       },
       getUser: function () {
-        var openId = window.localStorage.getItem('openId');
-        if (openId === undefined || openId === '' || openId.length <= 0) {
+        let openId = '';
+        let cookie = document.cookie;
+        let cookies = cookie.split(';');
+        for (let index in cookies) {
+          if (cookies[index] === "cookie") {
+            openId = cookies[index];
+          }
+        }
+        if (openId === '' || openId.length <= 0) {
           this.$router.push('/');
         }
         service('get', '/wechat/userInfo', {
