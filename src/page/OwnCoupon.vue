@@ -338,8 +338,8 @@
   #prompt {
     color: #a8a8a8;
     height: 100%;
-    width: 80%;
-    padding-left: 20px;
+    width: 79%;
+    padding-left: 5%;
     float: left;
   }
 
