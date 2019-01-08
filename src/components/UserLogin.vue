@@ -31,7 +31,7 @@
         count: '',
         show: true,
         timer: null,
-        jumpParams: this.$route.query.code,
+        jumpParams: this.$route.query.openId,
       }
     },
     beforeCreate() {
@@ -93,7 +93,7 @@
           }
           app.$router.push({
             path: '/home',
-            code: this.jumpParams
+            openId: this.jumpParams
           });
         })
       }

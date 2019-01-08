@@ -69,6 +69,7 @@
     data() {
       return {
         code: this.$route.query.code,
+        openId: '',
         banners: [
           {
             img: banner1,
@@ -140,21 +141,22 @@
     },
     methods: {
       jump: function (item) {
-        if (this.code === null) {
+        if (this.openId === null) {
           this.$router.push(item.link);
           return;
         }
         this.$router.push({
           path: item.link, query: {
-            code: this.code
+            openId: this.openId
           }
         });
       },
       addUserInfo: function () {
         service('get', '/wechat/addUserInfo', {
-          code: this.code
+          code: this.code,
+          userOpenId: this.openId
         }).then(data => {
-          this.code = data.data.code;
+          this.openId = data.data.openId;
         })
       }
     }
