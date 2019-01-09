@@ -137,7 +137,8 @@
         effect: 'slide',
         direction: 'horizontal',
       });
-      if (this.code.length > 0) {
+      let openId = this.getCookie('cookie_openId');
+      if (openId === null || openId.length <= 0 || openId === undefined) {
         this.getOpenId();
       }
     },
