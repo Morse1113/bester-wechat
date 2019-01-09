@@ -170,34 +170,16 @@
         this.$router.push(address);
       },
       getUser: function () {
-        let openId = this.getCookieName("cookie");
-        if (openId === '' || openId.length <= 0) {
-          this.$router.push('/');
-        }
-        service('get', '/wechat/userInfo', {
-          openId: openId
-        }).then(data =>{
+        service('get', '/wechat/userInfo', {}).then(data =>{
           if (data.code === 200) {
             this.nickname = data.data.userInfo.nickname;
             this.headImgUrl = data.data.userInfo.headImgUrl;
           } else {
-            this.nickname = '亚欧小镇';
-            this.headImgUrl = 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2918796768,2215175715&fm=26&gp=0.jpg';
-            // this.$router.push('/');
+            // this.nickname = '亚欧小镇';
+            // this.headImgUrl = 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2918796768,2215175715&fm=26&gp=0.jpg';
+            this.$router.push('/');
           }
         })
-      },
-      getCookieName: function (cname) {
-        let name = cname + "=";
-        let ca = document.cookie.split(';');
-        for(let i=0; i<ca.length; i++)
-        {
-          let c = ca[i].trim();
-          if (c.indexOf(name)===0) {
-            return c.substring(name.length,c.length);
-          }
-        }
-        return "";
       }
     }
   }
