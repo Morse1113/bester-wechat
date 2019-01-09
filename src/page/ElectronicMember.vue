@@ -135,6 +135,8 @@
         service('get', '/user/oreNumber', {}).then(data => {
           if (data.code === 200 && data.data !== null) {
             this.besterGold = data.data.oreNumber;
+          } else {
+            this.besterGold = 0;
           }
         })
       },
