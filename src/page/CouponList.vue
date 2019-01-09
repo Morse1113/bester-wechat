@@ -6,20 +6,21 @@
         infinite-scroll-distance="0"
         infinite-scroll-immediate-check="false">
       <li class="mui-table-view-cell" v-for="(item,index) in list" :key="index">
-        <div :class="dynamicLogoBackground(item.vipLevel,item.margin)">
+        <div class="div-left">
           <span class="led-num" v-if="item.margin==0">已抢光</span>
           <span class="led-num" v-else-if="item.limitNum!=0">可领{{item.limitNum}}张</span>
           <span class="led-num" v-else>领取上限</span>
+          <img  class="backgroundLogo" :src="dynamicLogoBackground(item.vipLevel,item.margin)"/>
         </div>
         <div class="div-middle">
           <div class="div-middle-top">
             <span class="coupon-name">{{item.couponName}}</span>
           </div>
-          <div class="div-middle-bottom">
-            <span class="coupon-info" v-if="item.couponType==1">{{item.offerCash}}元</span>
+          <div class="div-middle-middle">
+            <span class="coupon-info" v-if="item.couponType==1">{{item.offerCash}}</span>
             <span class="coupon-info" v-else>{{item.offerDiscount}}折</span>
-            <span :class="dynamicBackground(item.vipLevel,item.margin)" v-if="item.threshold!=null">满{{item.threshold}}元可用</span>
-            <span :class="dynamicBackground(item.vipLevel,item.margin)" v-else>满零可用</span>
+            <span :class="dynamicBackground(item.vipLevel,item.margin)" v-if="item.threshold!=null">满{{item.threshold}}可用</span>
+            <span :class="dynamicBackground(item.vipLevel,item.margin)" v-else>无限制</span>
           </div>
         </div>
         <div :class="dynamicButtonBackground(item.vipLevel,item.margin)" @click="getCoupon(index)">
@@ -50,7 +51,7 @@
         pageNum: 1,
         couponId: null,
         message: null,
-        noData: false
+        noData: false,
       }
     },
     created() {
@@ -80,27 +81,27 @@
       dynamicLogoBackground(vipLevel,margin) {
         if (vipLevel == 1) {
           if(margin==0){
-            return "div-left-1-disable";
+            return "/static/img/disBlackGoldMemberShipLogo.png";
           }
-          return "div-left-1";
+          return "/static/img/blackGoldMemberShipLogo.png";
         }
         if (vipLevel == 2) {
           if(margin==0){
-            return "div-left-2-disable";
+            return "/static/img/disPlatinumMemberShiplogo.png";
           }
-          return "div-left-2";
+          return "/static/img/platinumMemberShiplogo.png";
         }
         if (vipLevel == 3) {
           if(margin==0){
-            return "div-left-3-disable";
+            return "/static/img/disGoldMemberShiplogo.png";
           }
-          return "div-left-3";
+          return "/static/img/goldMemberShiplogo.png";
         }
         if (vipLevel == 4) {
           if(margin==0){
-            return "div-left-4-disable";
+            return "/static/img/disSilverMemberShiplogo.png";
           }
-          return "div-left-4";
+          return "/static/img/silverMemberShiplogo.png";
         }
       },
       dynamicBackground(vipLevel,margin) {
@@ -171,9 +172,9 @@
   }
 
   li {
-    height: 144px;
-    border-bottom: 10px solid #faf7fa;
-    background-color: #f2f2f2;
+    height: 90px;
+    border-bottom: 8px solid #f2f2f2;
+    background-color: #faf7fa;
   }
 
   li:last-child {
@@ -189,35 +190,39 @@
   }
 
   .div-middle-top{
-    height: 50%;
+    height: 40%;
     width: 100%;
   }
 
-  .div-middle-bottom{
-    height: 50%;
+  .div-middle-middle{
+    height: 40%;
     width: 100%;
-
+  }
+  .backgroundLogo{
+    height: 100%;
+    position: relative;
+    top: -20%;
   }
 
   .coupon-name{
     word-wrap: break-word;
-    font-size: 16px;
-    font-weight: bolder;
-    font-family: STHeiti,serif;
+    font-size: 14px;
     position: relative;
     top: 30%;
+    font-weight: bolder;
+    font-family: STHeiti;
   }
 
   .coupon-info {
     display: inline-block;
-    width: 100%;
-    font-size: 17px;
+    font-size: 18px;
     font-weight: bolder;
     font-family: STHeiti;
+    position: relative;
+    top: 25%;
   }
   .led-num {
-    font-size: 15px;
-    font-weight: bolder;
+    font-size: 12px;
     font-family: STHeiti;
     position: relative;
     top: 10%;
@@ -227,135 +232,77 @@
     display: inline-block;
     height: 60%;
     width: 20%;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: bolder;
     font-family: STHeiti;
+    color: white;
     position: relative;
-    top:20%;
+    top:10%;
   }
   .div-info{
-    font-size: 18px;
+    font-size: 15px;
     font-family: STHeiti;
   }
 
-  .div-left-1 {
+  .div-left {
     height: 100%;
     width: 30%;
     float: left;
-    background-image: url("../assets/blackGoldMemberShipLogo.png");
-    background-size: 100% 100%;
-  }
-
-  .div-left-1-disable {
-    height: 100%;
-    width: 30%;
-    float: left;
-    background-image: url("../assets/disBlackGoldMemberShipLogo.png");
-    background-size: 100% 100%;
-  }
-
-  .div-left-2 {
-    height: 100%;
-    width: 30%;
-    float: left;
-    background-image: url("../assets/platinumMemberShiplogo.png");
-    background-size: 100% 100%;
-  }
-
-  .div-left-2-disable {
-    height: 100%;
-    width: 30%;
-    float: left;
-    background-image: url("../assets/disPlatinumMemberShiplogo.png");
-    background-size: 100% 100%;
-  }
-
-  .div-left-3 {
-    height: 100%;
-    width: 30%;
-    float: left;
-    background-image: url("../assets/goldMemberShiplogo.png");
-    background-size: 100% 100%;
-  }
-
-  .div-left-3-disable {
-    height: 100%;
-    width: 30%;
-    float: left;
-    background-image: url("../assets/disGoldMemberShiplogo.png");
-    background-size: 100% 100%;
-  }
-
-  .div-left-4 {
-    height: 100%;
-    width: 30%;
-    float: left;
-    background-image: url("../assets/silverMemberShiplogo.png");
-    background-size: 100% 100%;
-  }
-
-  .div-left-4-disable {
-    height: 100%;
-    width: 30%;
-    float: left;
-    background-image: url("../assets/disSilverMemberShiplogo.png");
-    background-size: 100% 100%;
   }
 
   .div-limit-money-disable {
     color: white;
     display: inline-block;
-    width: 100%;
-    font-size: 15px;
+    font-size: 12px;
     font-family: STHeiti;
-    position: relative;
-    top: 25%;
     background-image: url("../assets/disMoneyBackground.png");
     background-size: 100% 100%;
+    position: relative;
+    top: 23%;
   }
 
   .div-limit-money-1 {
     display: inline-block;
-    width: 100%;
-    font-size: 15px;
+    font-size: 12px;
     font-family: STHeiti;
-    position: relative;
-    top: 25%;
     background-image: url("../assets/blackGoldMoneyBackground.png");
     background-size: 100% 100%;
+    color: white;
+    position: relative;
+    top: 23%;
   }
 
   .div-limit-money-2 {
     display: inline-block;
-    width: 100%;
-    font-size: 15px;
+    font-size: 12px;
     font-family: STHeiti;
-    position: relative;
-    top: 25%;
     background-image: url("../assets/platinumMoneyBackground.png");
     background-size: 100% 100%;
+    color: white;
+    position: relative;
+    top: 23%;
   }
 
   .div-limit-money-3 {
     display: inline-block;
-    width: 100%;
-    font-size: 15px;
+    font-size: 12px;
     font-family: STHeiti;
-    position: relative;
-    top: 25%;
     background-image: url("../assets/goldMoneyBackground.png");
     background-size: 100% 100%;
+    color: white;
+    position: relative;
+    top: 23%;
   }
 
   .div-limit-money-4 {
     display: inline-block;
-    width: 100%;
-    font-size: 15px;
+    font-size: 12px;
     font-family: STHeiti;
-    position: relative;
-    top: 25%;
     background-image: url("../assets/silverMoneyBackground.png");
     background-size: 100% 100%;
+    color: white;
+    position: relative;
+    top: 23%;
   }
 
   .div-right-disable {
