@@ -191,6 +191,8 @@
       },
       getCookieName: function (cname) {
         let name = cname + "=";
+        console.log('document.cookie------------------>')
+        console.log(document.cookie)
         let ca = document.cookie.split(';');
         for (let i = 0; i < ca.length; i++) {
           let c = ca[i].trim();
