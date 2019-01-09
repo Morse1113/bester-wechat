@@ -137,20 +137,31 @@
         effect: 'slide',
         direction: 'horizontal',
       });
-      this.addUserInfo();
+      let openId = this.getCookie('cookie');
+      if (openId === undefined || openId.length <= 0) {
+        this.getOpenId();
+      }
     },
     methods: {
       jump: function (item) {
         this.$router.push(item.link);
       },
-      addUserInfo: function () {
+      getOpenId: function () {
         service('get', '/wechat/openId', {
           code: this.code
         }).then(data => {
+          this.code  = '';
           if (data.code !== 200) {
             this.$router.push('/');
           }
         })
+      },
+      getCookie: function (cName) {
+        let arr, reg = new RegExp("(^| )" + cName + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg))
+          return unescape(arr[2]);
+        else
+          return null;
       }
     }
   }
