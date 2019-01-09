@@ -21,8 +21,8 @@
         <span class="time">{{bindTime}}</span>
       </div>
     </div>
-      <img v-for="item in firstRow" class="benefits" :src=item.img @click="jump(item.link)">
-      <img v-for="item in secondRow" class="benefits" :src=item.img @click="jump(item.link)">
+    <img v-for="item in firstRow" class="benefits" :src=item.img @click="jump(item.link)">
+    <img v-for="item in secondRow" class="benefits" :src=item.img @click="jump(item.link)">
     <div class="ad">
       <img class="featured" src="../assets/electronicMember/banner.png" @click="jump()">
     </div>
@@ -144,8 +144,8 @@
             this.card = BGcard
             var cardId = data.data.cardId;
             var bindTime = data.data.bindTime;
-            var year = bindTime.slice(2,4);
-            var month = bindTime.slice(4,7);
+            var year = bindTime.slice(2, 4);
+            var month = bindTime.slice(4, 7);
             this.bindTime = month + '/' + year;
             var firstHalf = cardId.slice(0, 6);
             var secondHalf = cardId.slice(6, 12);
@@ -171,12 +171,14 @@
       },
       getUser: function () {
         let openId = this.getCookieName("cookie");
+        console.log('cookie:openId----------------------->')
+        console.log(openId)
         if (openId === '' || openId.length <= 0) {
           this.$router.push('/');
         }
         service('get', '/wechat/userInfo', {
           openId: openId
-        }).then(data =>{
+        }).then(data => {
           if (data.code === 200) {
             this.nickname = data.data.userInfo.nickname;
             this.headImgUrl = data.data.userInfo.headImgUrl;
@@ -190,11 +192,10 @@
       getCookieName: function (cname) {
         let name = cname + "=";
         let ca = document.cookie.split(';');
-        for(let i=0; i<ca.length; i++)
-        {
+        for (let i = 0; i < ca.length; i++) {
           let c = ca[i].trim();
-          if (c.indexOf(name)===0) {
-            return c.substring(name.length,c.length);
+          if (c.indexOf(name) === 0) {
+            return c.substring(name.length, c.length);
           }
         }
         return "";
