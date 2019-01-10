@@ -50,7 +50,7 @@ let router = new Router({
       name: 'CouponList',
       component: CouponList,
       meta: {
-        title: '优惠卷列表'
+        title: '优惠券列表'
       }
     },
   ]

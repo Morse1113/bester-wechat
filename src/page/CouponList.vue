@@ -7,8 +7,8 @@
         infinite-scroll-immediate-check="false">
       <li class="mui-table-view-cell" v-for="(item,index) in list" :key="index">
         <div :class="dynamicLogoBackground(item.vipLevel,item.margin)">
-          <span class="led-num" v-if="item.margin==0">已抢光</span>
-          <span class="led-num" v-else-if="item.limitNum!=0">可领{{item.limitNum}}张</span>
+          <span class="led-num" v-if="item.margin===0">已抢光</span>
+          <span class="led-num" v-else-if="item.limitNum!==0">可领{{item.limitNum}}张</span>
           <span class="led-num" v-else>领取上限</span>
         </div>
         <div class="div-middle">
@@ -16,9 +16,9 @@
             <span class="coupon-name">{{item.couponName}}</span>
           </div>
           <div class="div-middle-bottom">
-            <span class="coupon-info" v-if="item.couponType==1">{{item.offerCash}}元</span>
+            <span class="coupon-info" v-if="item.couponType===1">{{item.offerCash}}元</span>
             <span class="coupon-info" v-else>{{item.offerDiscount}}折</span>
-            <span :class="dynamicBackground(item.vipLevel,item.margin)" v-if="item.threshold!=null">满{{item.threshold}}元可用</span>
+            <span :class="dynamicBackground(item.vipLevel,item.margin)" v-if="item.threshold!==null">满{{item.threshold}}元可用</span>
             <span :class="dynamicBackground(item.vipLevel,item.margin)" v-else>满零可用</span>
           </div>
         </div>
@@ -27,10 +27,10 @@
         </div>
       </li>
       <li class="more_loading">
-        <mt-spinner class="class-spinner" type="triple-bounce" color="#00ccff" :size="10"
+        <mt-spinner class="class-spinner" type="triple-bounce" color="#00ccff" :size=this.pageSize
                     v-show="!moreLoading&&!allLoaded"></mt-spinner>
         <span class="div-info" v-show="allLoaded">已全部加载</span>
-        <span class="div-info" v-show="noData">暂无优惠卷信息</span>
+        <span class="div-info" v-show="noData">暂无优惠券信息</span>
       </li>
     </ul>
   </div>
@@ -71,69 +71,69 @@
       getCoupon(index) {
         service('post', '/user/receive/coupon', {couponId: this.list[index].id}).then(response => {
           Toast(response.message);
-          if (response.code == 200) {
+          if (response.code === 200) {
             this.list[index].limitNum = this.list[index].limitNum - 1;
             this.list[index].margin = this.list[index].margin - 1;
           }
         })
       },
-      dynamicLogoBackground(vipLevel,margin) {
-        if (vipLevel == 1) {
-          if(margin==0){
+      dynamicLogoBackground(vipLevel, margin) {
+        if (vipLevel === 1) {
+          if (margin === 0) {
             return "div-left-1-disable";
           }
           return "div-left-1";
         }
-        if (vipLevel == 2) {
-          if(margin==0){
+        if (vipLevel === 2) {
+          if (margin === 0) {
             return "div-left-2-disable";
           }
           return "div-left-2";
         }
-        if (vipLevel == 3) {
-          if(margin==0){
+        if (vipLevel === 3) {
+          if (margin === 0) {
             return "div-left-3-disable";
           }
           return "div-left-3";
         }
-        if (vipLevel == 4) {
-          if(margin==0){
+        if (vipLevel === 4) {
+          if (margin === 0) {
             return "div-left-4-disable";
           }
           return "div-left-4";
         }
       },
-      dynamicBackground(vipLevel,margin) {
-        if(margin==0){
+      dynamicBackground(vipLevel, margin) {
+        if (margin === 0) {
           return "div-limit-money-disable";
         }
-        if (vipLevel == 1) {
+        if (vipLevel === 1) {
           return "div-limit-money-1";
         }
-        if (vipLevel == 2) {
+        if (vipLevel === 2) {
           return "div-limit-money-2";
         }
-        if (vipLevel == 3) {
+        if (vipLevel === 3) {
           return "div-limit-money-3";
         }
-        if (vipLevel == 4) {
+        if (vipLevel === 4) {
           return "div-limit-money-4";
         }
       },
-      dynamicButtonBackground(vipLevel,margin) {
-        if(margin==0){
+      dynamicButtonBackground(vipLevel, margin) {
+        if (margin === 0) {
           return "div-right-disable";
         }
-        if (vipLevel == 1) {
+        if (vipLevel === 1) {
           return "div-right-1";
         }
-        if (vipLevel == 2) {
+        if (vipLevel === 2) {
           return "div-right-2";
         }
-        if (vipLevel == 3) {
+        if (vipLevel === 3) {
           return "div-right-3";
         }
-        if (vipLevel == 4) {
+        if (vipLevel === 4) {
           return "div-right-4";
         }
       },
@@ -181,29 +181,28 @@
   }
 
   .div-middle {
-    overflow:hidden;
-    /*zoom:1;*/
+    overflow: hidden;
     height: 100%;
     width: 45%;
     float: left;
   }
 
-  .div-middle-top{
+  .div-middle-top {
     height: 50%;
     width: 100%;
   }
 
-  .div-middle-bottom{
+  .div-middle-bottom {
     height: 50%;
     width: 100%;
 
   }
 
-  .coupon-name{
+  .coupon-name {
     word-wrap: break-word;
     font-size: 16px;
     font-weight: bolder;
-    font-family: STHeiti,serif;
+    font-family: STHeiti, serif;
     position: relative;
     top: 30%;
   }
@@ -215,6 +214,7 @@
     font-weight: bolder;
     font-family: STHeiti;
   }
+
   .led-num {
     font-size: 15px;
     font-weight: bolder;
@@ -223,7 +223,8 @@
     top: 10%;
     left: 12%;
   }
-  .led-button{
+
+  .led-button {
     display: inline-block;
     height: 60%;
     width: 20%;
@@ -231,9 +232,10 @@
     font-weight: bolder;
     font-family: STHeiti;
     position: relative;
-    top:20%;
+    top: 20%;
   }
-  .div-info{
+
+  .div-info {
     font-size: 18px;
     font-family: STHeiti;
   }
