@@ -6,12 +6,12 @@
         <span class="nickname">{{nickname}}</span>
       </div>
       <div class="right-div">
-        <span class="right" style="font-weight: bolder; font-size: small">比斯特金:<span class="" style="font-size: large">{{besterGold}}</span></span>
+        <span class="right" style="font-weight: bolder; font-size: x-small">比斯特金:<span class="" style="font-size: medium">{{besterGold}}</span></span>
       </div>
     </div>
     <div class="BG-card">
       <div class="card-div">
-        <img class="card" :src="card">
+        <img class="card" :src=card>
       </div>
       <div class="firstHalf">
         <img v-show="firstHalf !== null" class="cardNumber" :src=img v-for="img in firstHalf">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -69,7 +69,6 @@
         secondHalf: [],
         bindTime: '',
         background: background,
-        BGCard: BGcard,
         SliverCard: SliverCard,
         card: '',
         numberMap: {},
@@ -159,8 +158,8 @@
         })
       },
       conversionCardArray: function (halfCard, type) {
-        for (var i = 0; i < halfCard.length; i++) {
-          var img = this.numberMap.get(halfCard[i]);
+        for (let i = 0; i < halfCard.length; i++) {
+          let img = this.numberMap.get(halfCard[i]);
           if (type === 1) {
             this.firstHalf.push(img);
           } else {
@@ -206,10 +205,10 @@
   }
 
   .right-div {
-    width: 170px;
+    width: 40%;
     position: absolute;
     top: 80px;
-    left: 52%;
+    left: 56%;
   }
 
   .right {
@@ -217,35 +216,30 @@
   }
 
   .BG-card {
-    width: 90%;
-    margin: 20px 5% 0%;
-  }
-
-  .card-div {
-    position: relative;
+    margin: 20px auto;
   }
 
   .firstHalf {
     position: relative;
-    bottom: 120px;
+    bottom: 95px;
+  }
+
+  .card {
+    width: 310px;
+    height: 202px;
+  }
+
+  .cardNumber {
+    width: 13px;
   }
 
   .bindTime {
     position: relative;
-    bottom: 80px;
-    right: 30px;
+    bottom: 70px;
   }
 
   .time {
     color: #e6bd77;
-  }
-
-  .card {
-    width: 100%;
-  }
-
-  .cardNumber {
-    width: 4%;
   }
 
   .benefits {
