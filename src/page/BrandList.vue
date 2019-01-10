@@ -151,13 +151,13 @@
     },
     methods: {
       recommend: function() {
-//        const qs = require('qs');
-        service('get', '/brand/idList', {
-          brandIdList: this.headerBrandIds,
-//          paramsSerializer: function(brandIdList) {
-//            return Qs.stringify(brandIdList, {arrayFormat: 'repeat'})
-//          }
-          }).then(data => {
+        let param = this.headerBrandIds;
+        let url = '/brand/idList?';
+        param.forEach(item => {
+          url += 'brandIdList=' + item + '&'
+        })
+        url = url.replace(/&$/, '')
+        service('get', url, {}).then(data => {
             if (data.code !== 200) {
               alert(data.message);
               return;
