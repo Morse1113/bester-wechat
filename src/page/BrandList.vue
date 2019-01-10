@@ -11,11 +11,12 @@
     <div class="fill_div"></div>
     <div class="recommend_div">
       <div class="recommend_div_three" v-for="brand in headerBrands">
-        <img class="recommend_img_three" :src="brand.logo" @click="brandInfo(brand.brandId)"/><br/>
+        <img class="recommend_img_three" :src="brand.brandLogo" @click="brandInfo()"/><br/>
         <p class="p_size">{{brand.brandName}}</p>
       </div>
     </div>
     <div class="all_slogan"><h5 class="h5_slogan">所有品牌</h5></div>
+    <div class="fill_div2"></div>
     <div v-if="searchBack" class="one_div">
       <div v-for="(result, index) in searchBack" class="box">
         <div class="content">
@@ -59,22 +60,31 @@
       <div class="mask"></div>
       <div class="float_frame">
         <div class="choice_div">
-          <div class="choice_left" @click="states=1">楼号<img :src="this.states===1 ? selectedTypes[0] : '../assets/down.png'" class="down_up_img"/></div>
-          <div class="choice_center" @click="states=2">业态<img :src="this.states===2 ? selectedTypes[0] : '../assets/down.png'" class="down_up_img"/></div>
-          <div class="choice_right" @click="states=3">排序<img :src="this.states===3 ? selectedTypes[0] : '../assets/down.png'" class="down_up_img"/></div>
+          <div class="choice_left" @click="states=1">楼号<img :src="this.states===1 ? '../static/img/down.png' : '../static/img/up.png'" class="down_up_img"/></div>
+          <div class="choice_center" @click="states=2">业态<img :src="this.states===2 ? '../static/img/down.png' : '../static/img/up.png'" class="down_up_img"/></div>
+          <div class="choice_right" @click="states=3">排序<img :src="this.states===3 ? '../static/img/down.png' : '../static/img/up.png'" class="down_up_img"/></div>
         </div>
-        <div class="center_content" v-show="this.states===1" id="state1">
+        <div class="center_content" v-show="this.states===1">
           <div class="center_left">亚欧国际小镇</div>
           <div class="right_div">
             <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
           </div>
         </div>
-        <div class="center_content" v-show="this.states===2" id="state2">
-          <div v-for="(t, index) in types">
-            <img :src="typeSelected === index ? selectedTypes[index] : t" @click="typeSelected=index" class="center_img"/>
+        <div class="center_content" v-show="this.states===2">
+          <div class="loop_div_top">
+            <div v-for="(t1, index) in typesTop">
+              <img :src="typeSelected === index+1 ? selectedTypesTop[index] : t1" @click="onChangeType(index+1)"
+                   class="center_img_top"/>
+            </div>
+          </div>
+          <div class="loop_div_bottom">
+            <div v-for="(t2, index) in typesBottom">
+              <img :src="typeSelected === index+6 ? selectedTypesBottom[index] : t2" @click="onChangeType(index+6)"
+                   class="center_img_bottom"/>
+            </div>
           </div>
         </div>
-        <div class="center_content" v-show="this.states===3" id="state3">
+        <div class="center_content" v-show="this.states===3">
           <div class="center_left">亚欧国际小镇</div>
           <div class="right_div">
             <mt-picker :slots="sort" @change="onSortChange"></mt-picker>
@@ -100,7 +110,16 @@
   import xiuxian from '../assets/type/xiuxian.png'
   import yingyuan from '../assets/type/yingyuan.png'
   import yule from '../assets/type/yule.png'
-
+  import aolai2 from '../assets/type/aolai2.png'
+  import canyin2 from '../assets/type/canyin2.png'
+  import ertongguan2 from '../assets/type/ertongguan2.png'
+  import liren2 from '../assets/type/liren2.png'
+  import maoyi2 from '../assets/type/maoyi2.png'
+  import qinzijiudian2 from '../assets/type/qinzijiudian2.png'
+  import xinlingshou2 from '../assets/type/xinlingshou2.png'
+  import xiuxian2 from '../assets/type/xiuxian2.png'
+  import yingyuan2 from '../assets/type/yingyuan2.png'
+  import yule2 from '../assets/type/yule2.png'
   export default {
     data() {
       return {
@@ -114,8 +133,10 @@
         val: '',
         states: 1,
         typeSelected: -1,
-        types: [yule, canyin, aolai, xiuxian, xinlingshou, yingyuan, liren, maoyi, ertongguan, qinzijiudian],
-        selectedTypes: ['https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1535765175&di=0199743b7f771770da0d2a7369dab307&src=http://www.epbiao.com/Public/upload/remote/2017/08/75571501738934.png'],
+        typesTop: [yule, canyin, aolai, xiuxian, xinlingshou],
+        typesBottom: [yingyuan, liren, maoyi, ertongguan, qinzijiudian],
+        selectedTypesTop: [yule2, canyin2, aolai2, xiuxian2, xinlingshou2],
+        selectedTypesBottom: [yingyuan2, liren2, maoyi2, ertongguan2, qinzijiudian2],
         headerBrandIds: [32, 16, 27],
         headerBrands: [],
         dialogShow: false,
@@ -130,22 +151,20 @@
     },
     methods: {
       recommend: function() {
-        for (let index = 0; index < this.headerBrandIds.length; index++) {
-          service('get', '/brand/detail', {
-            brandId: this.headerBrandIds[index]
+//        const qs = require('qs');
+        service('get', '/brand/idList', {
+          brandIdList: this.headerBrandIds,
+//          paramsSerializer: function(brandIdList) {
+//            return Qs.stringify(brandIdList, {arrayFormat: 'repeat'})
+//          }
           }).then(data => {
             if (data.code !== 200) {
               alert(data.message);
               return;
             }
-            let brandInfo = {
-              brandId: this.headerBrandIds[index],
-              logo: data.data.brandLogo,
-              brandName: data.data.brandName
-            };
-            this.headerBrands.push(brandInfo);
+            this.headerBrands = data.data;
+            console.log(this.headerBrands);
           });
-        }
       },
       query(){
         service('get', '/brand/list', {
@@ -199,7 +218,7 @@
       clickRight(){
         this.dialogShow = false;
         service('get', '/brand/list', {
-          brandType: this.choiceTypes,
+          brandType: this.typeSelected,
           orderType: this.choiceSort,
           floor: this.choiceFloor
         }).then(data => {
@@ -210,23 +229,28 @@
           this.searchBack = data.data;
           this.choiceSort = 0;
           this.choiceFloor = 0;
-          this.choiceTypes = 0;
+          this.typeSelected = -1;
         });
       },
       onValuesChange(picker, values){
         this.choiceFloor = values[0].replace(/[^0-9]/ig,"");
-        this.choiceTypes = 0;
+        this.typeSelected = -1;
+        this.choiceSort = 0;
+      },
+      onChangeType(index){
+        this.typeSelected = index;
+        this.choiceFloor = 0;
         this.choiceSort = 0;
       },
       onSortChange(picker,values){
         this.val = values[0];
         if (this.val === '点赞排序'){
           this.choiceSort = 1;
-          this.choiceTypes = 0;
+          this.typeSelected = -1;
           this.choiceFloor = 0;
         } else if (this.val === '收藏排序'){
           this.choiceSort = 2;
-          this.choiceTypes = 0;
+          this.typeSelected = -1;
           this.choiceFloor = 0;
         }
       }
@@ -294,6 +318,14 @@
     top: 95px;
   }
 
+  .fill_div2 {
+    position: fixed;
+    height: 20px;
+    width: 100%;
+    background-color: #faf7fa;
+    top: 245px;
+  }
+
   .recommend_div {
     position: fixed;
     width: 100%;
@@ -340,7 +372,7 @@
   }
 
   .one_div {
-    margin-top: 260px;
+    margin-top: 265px;
     width: 100%;
   }
 
@@ -411,7 +443,7 @@
   }
   .float_frame {
     width: 100%;
-    height: 300px;
+    height: 273px;
     background-color: white;
     top: 80px;
     position: fixed;
@@ -426,6 +458,7 @@
   .click_div {
     width: 100%;
     height: 40px;
+    margin-top: -30px;
   }
   .click_left {
     float: left;
@@ -467,13 +500,30 @@
     width: 100%;
     height: 210px;
   }
-  .center_img {
+  .center_img_top {
     float: left;
     width: 14%;
     height: auto;
     margin-left: 5%;
     margin-top: 20px;
   }
+  .center_img_bottom {
+    float: left;
+    width: 14%;
+    height: auto;
+    margin-left: 5%;
+  }
+
+  .loop_div_top {
+    width: 100%;
+    height: 90px;
+  }
+
+  .loop_div_bottom {
+    width: 100%;
+    height: 90px;
+  }
+
   .down_up_img {
     width: 8px;
     height: 8px;
