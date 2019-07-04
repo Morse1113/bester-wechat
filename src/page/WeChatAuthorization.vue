@@ -8,7 +8,7 @@
   export default {
     name: "Authorization",
     mounted() {
-      this.toRedirect();
+      window.location.href = '/home';
     },
     methods: {
       toRedirect: function () {

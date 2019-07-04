@@ -114,7 +114,7 @@
     mounted() {
       this.findBesterGold();
       this.getBlackGoldId();
-      this.getUser();
+      // this.getUser();
       this.numberMap = new Map();
       this.numberMap.set('B', B);
       this.numberMap.set('G', G);

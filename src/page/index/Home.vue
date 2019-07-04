@@ -137,10 +137,10 @@
         effect: 'slide',
         direction: 'horizontal',
       });
-      let openId = this.getCookie('cookie_openId');
-      if (openId === null || openId.length <= 0 || openId === undefined) {
-        this.getOpenId();
-      }
+      // let openId = this.getCookie('cookie_openId');
+      // if (openId === null || openId.length <= 0 || openId === undefined) {
+      //   this.getOpenId();
+      // }
     },
     methods: {
       jump: function (item) {
